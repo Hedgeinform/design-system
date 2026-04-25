@@ -1,9 +1,28 @@
 # Arkadiy Schennikov — Design System
 
-**Version:** 0.5 · 2026-04-25
+**Version:** 0.6 · 2026-04-25
 **Maintainer:** Arkadiy (author) · Claude (co-author on this build)
 
 > **Changelog**
+> - **0.6** — Structural maturation pass. Three additions and one renumbering.
+>   - **§1 — three voices.** Philosophy now names the three kinds of visual content that legitimately co-exist on a Schennikov surface: *brand signal* (decoration that looks like data), *data* (charts that are data), *hosted artefacts* (content authored elsewhere — generated images, embedded videos, quoted external surfaces). The DS regulates each voice differently; this is the frame for §3a and §7.1a *Containment*.
+>   - **§3a — Hosted artefacts (new).** Names and bounds the case "a Schennikov surface hosts content whose visual language is foreign to the system." DS owns the wrapper (frame, caption, surface, adjacent typography); the artefact owns its interior. Required and forbidden behaviours enumerated. This legalises art-driven projects (generated imagery), client work whose imagery is dictated by external brand, and editorial figures quoting external dashboards or videos.
+>   - **§7.6 — Axis-only chart (new, was open question from v0.5 §C-response).** Rules for sparkline-style and minimalist charts where there are no gridlines and the axis is the only visible armature. Axis steps up to `--ink-soft`; tick density and label rules diverge from §7.5.
+>   - **§7 numbering rationalisation** (closes v0.5 known debt). The intra-§7 ordering now reads top-to-bottom in conceptual sequence, not in historical-append sequence. Mapping table:
+>
+>     | v0.5 § | v0.6 § | Title |
+>     |---|---|---|
+>     | 7.10 | 7.4 | Histograms — distribution contract |
+>     | 7.11 | 7.5 | Axes & gridlines — the layering contract |
+>     | (new) | 7.6 | Axis-only chart |
+>     | 7.4 | 7.7 | Alerts / callouts |
+>     | 7.5 | 7.8 | Status pills |
+>     | 7.6 | 7.9 | Search input |
+>     | 7.7 | 7.10 | Dense layout mode |
+>     | 7.8 | 7.11 | Form controls, modals, skeletons |
+>     | 7.9 | 7.12 | JS chart libraries |
+>
+>     Cross-references inside the document updated. Downstream consumers of the DS (notably `Hedgeinform/hedgedasbord` ARCHITECTURE.md OV3/OV4/OV5) must update inbound `§7.x` references when they pull v0.6.
 > - **0.5** — Field-reconciliation pass against the live dashboard (commit 497a0f3). Five points resolved across two categories.
 >   - **Corrections** (DS was wrong, dashboard was right):
 >     - **§7.11 axis ≥ gridline** — strict inequality relaxed to "axis ≥ gridline, equality permitted when both are quiet enough not to compete with data." Axis must never be *weaker* than gridlines; equality is fine.
@@ -35,6 +54,14 @@ This is the design language for Arkadiy's independent practice and all artefacts
 
 **Technical voice comes from typography, not iconography.** The coded feeling of the brand is carried by IBM Plex Mono in UI labels (`§01`, `FIG. II`, `20 MS/DIV`) and by small SVG plots (FFT spectra, Lissajous curves, phase portraits) as decoration — never as data. Body text is always Manrope, never mono.
 
+**Three voices of visual content.** A Schennikov surface legitimately carries up to three distinct kinds of content, regulated differently:
+
+1. **Brand signal** — FFT plots, Lissajous, ring, phase portraits, monogram, Euler. Decoration that *looks like* data but is not. Lives in margins, hero corners, section openers. Voice: warm coal, single accent. Governed by §3 rule 5.
+2. **Data** — charts, tables, dashboards. Looks like data and *is* data. Lives in main content. Voice: warm coal with §7.1a polarity vocabulary on dense surfaces. Governed by §7.
+3. **Hosted artefacts** — generated images, embedded videos, quoted external surfaces, third-party widgets, client-supplied imagery. Authored elsewhere; the DS does not regulate their interior. Voice: their own. Governed by §3a — DS owns the frame, the artefact owns the inside.
+
+The discipline is to keep the three voices distinct. Brand signal does not pretend to be data; data does not pick up colour from hosted artefacts; hosted artefacts do not bleed past their frame.
+
 ---
 
 ## 2 · Tokens (see `tokens.css`)
@@ -47,7 +74,7 @@ This is the design language for Arkadiy's independent practice and all artefacts
 | `--accent-soft`| `#2e201a`  | Tinted surface behind callouts, inputs. |
 | `--ink`        | `#ede5d8`  | Primary text — warm cream. |
 | `--ink-soft`   | `#968c7a`  | Muted text, eyebrows, meta. |
-| `--ink-faint`  | `#322a25`  | Genuinely-ghost only: watermarks, deprecated values, explicitly de-emphasised secondary axes. **Not** for tick labels (see §7.11). |
+| `--ink-faint`  | `#322a25`  | Genuinely-ghost only: watermarks, deprecated values, explicitly de-emphasised secondary axes. **Not** for tick labels (see §7.5). |
 | `--rule`       | `#241f1b`  | Hairlines, 1px borders, dividers. |
 | `--accent`     | `#f5936a`  | Coral-peach. **THE signal colour.** Use sparingly. |
 
@@ -96,6 +123,40 @@ This is the design language for Arkadiy's independent practice and all artefacts
 6. **Rule lines are 1px, `var(--rule)`.** No shadows. No rounded corners except on the pulse dot and avatar frames (where it's sensible — not because CSS makes it easy).
 7. **Gradients: forbidden.** The palette is flat. Any "depth" comes from typography, not from Photoshop.
 8. **Emoji: forbidden as brand elements.** Fine inside user content (essay bodies, quotes).
+
+---
+
+## 3a · Hosted artefacts
+
+A Schennikov surface may host an artefact whose visual language is foreign to the system — a generated image, an embedded video, a third-party widget, a quoted dashboard from another product, client-supplied imagery the practice does not control. The DS does not regulate the *interior* of such an artefact; it regulates the **frame**: how the artefact is introduced, bounded, captioned, and referred to.
+
+The principle: **DS owns the wrapper, the artefact owns its interior.** A loud image inside a quiet frame reads as a deliberate citation. A loud image with the page tinted to match it reads as a designer who has lost his nerve.
+
+**Required.**
+
+- The artefact sits in an explicit container — a `<figure>`, a `--bg-elev` card, a quoted block — bounded by a 1px `--rule` hairline or by negative space. Never bounded by a solid coloured fill.
+- The frame is built from DS tokens only. Surface is `--bg` or `--bg-elev`; any text adjacent to the artefact (caption, fig number, alt label, source attribution) uses DS typography per §2 — `--font-mono` 11px uppercase for labels (`FIG. 03`, `SOURCE: …`), `--font-body` for captions, `--ink` / `--ink-soft` for text colour.
+- The artefact does not bleed past its container. No edge-to-edge images that fight the page background, no overflow that escapes the figure's bounding box.
+- The artefact is referenced from body text by its mono label (`see FIG. 03`), the same way an essay or paper cites a figure. This anchors the artefact as a *citation*, not as decoration.
+
+**Forbidden.**
+
+- ❌ The artefact's palette leaking into the surrounding chrome — no nav, button, link, accent, hairline, or focus ring picking up colour from the artefact, even if it would "look harmonious."
+- ❌ The artefact replacing or shifting `--accent`. The single coral accent stays coral, regardless of what colours the artefact contains.
+- ❌ Tinting the page or the figure surface to match the artefact ("wrap the image in its own dominant hue"). The page background stays `--bg`; the figure surface stays `--bg` or `--bg-elev`. No exceptions.
+- ❌ Using the artefact's content as decoration outside the frame — no faded background versions, no cropped accent strips, no derivative colour washes.
+- ❌ Stacking multiple hosted artefacts edge-to-edge with no DS frame between them. Each artefact gets its own bounded surface.
+
+**Why this works.** The frame is what makes the artefact *legible* as content rather than as design. When the system is disciplined enough to host loud content without absorbing its language, the contrast itself becomes part of the composition: a tightly-controlled warm-coal surface acts as a gallery wall, and the hosted artefacts read as exhibits. This is the editorial logic of a museum catalogue, a scientific journal, an annotated record — the layout *is* the position.
+
+**Use cases this legalises.**
+
+- Art-driven projects whose generated imagery is necessarily loud (the spec for which the DS could never have been built — see §1 voice 3).
+- Client work where the imagery is dictated by the client's brand and the practice does not control it; the DS-styled chrome (nav, footer, captions) frames the client material without absorbing it.
+- Editorial articles citing an external dashboard, video, or screenshot as a figure (the case originally noted in §7.1a *Containment*; that paragraph remains and is now a specific instance of §3a).
+- Embeddings (YouTube players, tweets, Figma frames, third-party widgets) that come with their own colour systems.
+
+**Edge case — when the artefact *is* the page.** A surface dedicated entirely to displaying generated artefacts (a gallery view, a stream of generated images) may relax the "framed figure" rule and present the artefacts as a contact sheet — a regular grid bounded by the page gutter and `--rule` hairlines, captions per cell. The single-artefact frame rules apply per cell; the page chrome (topbar, footer, nav) remains DS-tokens-only.
 
 ---
 
@@ -260,39 +321,54 @@ Bars are discrete visual units. Unlike line charts (continuous), a bar *can* car
 | **Severity-coloured** | `--ink-soft` (norm) / `--state-warn` (over threshold) / `--state-crit` (critical) | Metrics with a target/threshold where each bar's state matters (work hours, error rates, latency spikes). |
 | **Polarity-coloured** | `--val-pos` / `--val-neu` / `--val-neg` per bar (§7.1a) | Bars that represent value polarity — deltas, comparisons, signed metrics. One hue per bar, never blended. |
 | **Measurement without judgement** | all bars `--accent` | Metrics with no normative reading in the moment (social contacts per day, raw event counts) but kept on the surface for downstream pattern-detection. Visually identical to single-series — the *intent* is what differs: the chart deliberately refuses to colour-code state. |
-| **Bin histogram** | all bars `--accent`, see §7.10 | Distribution of values into bins. Single-colour always — bins don't have states. (For the named exception where bins *do* carry mixed semantics, see §7.1a-2 *Asymmetric action histogram*.) |
+| **Bin histogram** | all bars `--accent`, see §7.4 | Distribution of values into bins. Single-colour always — bins don't have states. (For the named exception where bins *do* carry mixed semantics, see §7.1a-2 *Asymmetric action histogram*.) |
 
 **Threshold line** — 1px dashed `--accent`, drawn horizontally at the target value. Label goes in the legend row, not floating on the chart.
 
 **Multi-series bars (grouped)** — use `seriesColors(n)` like line charts (coral 100/60/30%). If you need grouped bars *and* state colouring simultaneously, the chart wants to be two charts stacked.
 
-### 7.10 Histograms — distribution contract
+### 7.4 Histograms — distribution contract
 
 Histograms communicate **shape**, not individual values. The contract:
 
 - **Bins are dense.** `gap` between bars ≤ 1px (or 0 for tight distributions). The eye should read a silhouette, not a row of separated bars.
 - **All bars one colour** — `--accent`. Bins are not states. Never colour bins by polarity or severity — a histogram bar means "count in this range," nothing more.
 - **Baseline.** A 1px `--ink-faint` line at the bottom anchors the distribution. No top frame, no side frames.
-- **No per-bar labels.** Y-axis ticks (§7.11) carry the count scale; each-bar annotation defeats the silhouette read.
+- **No per-bar labels.** Y-axis ticks (§7.5) carry the count scale; each-bar annotation defeats the silhouette read.
 - **X-axis ticks every N bins**, where N is chosen so labels do not collide — typically every 5th or 10th bin. Ticks on the bin edges, not the bin centres.
 - **Annotations** (mean, median, target) — 1px dashed `--accent` vertical line + mono uppercase label at the top of the chart area. Maximum two annotations per histogram.
 
 Use `components/bar-chart.html` (histogram flavour) as the reference.
 
-### 7.11 Axes & gridlines — the layering contract
+### 7.5 Axes & gridlines — the layering contract
 
 Axes and gridlines coexist in every chart. They must read as a **layered hierarchy**, not as a tangle.
 
 - **Relative weight.** Axis is **at least as heavy as** gridlines, never lighter. Equality is permitted *if both are quiet enough not to compete with the data* — on a tight, data-dense surface a 1px `--rule` axis over 1px `--rule` gridlines reads as a single quiet armature, and that is fine. The directional rule (axis ≥ gridline) is non-negotiable; the strict inequality is not.
 - **Axis line.** 1px `--rule` is the dashboard default — quiet armature, lets data dominate. Step it up to 1px `--ink-soft` only when the chart is sparse, when there are no gridlines (axis-only chart), or when the axis must visibly anchor a small embedded chart. Never `--ink-faint` (that's the de-emphasis register, see §2).
-- **Gridlines.** 1px `--rule` (= `--data-grid`). Horizontal only for line/bar/area charts. Vertical gridlines are reserved for histograms (§7.10) where the X axis is categorical-ordinal and counts are meaningful per bin edge.
+- **Gridlines.** 1px `--rule` (= `--data-grid`). Horizontal only for line/bar/area charts. Vertical gridlines are reserved for histograms (§7.4) where the X axis is categorical-ordinal and counts are meaningful per bin edge.
 - **No overlap.** A gridline never sits on top of an axis. If a tick value falls on the baseline, omit the gridline at that position — the axis already draws it.
 - **Tick labels.** Mono 11px `--data-axis` (= `--ink-soft`, see §2). Sit *outside* the plot area, never overlapping the axis or any gridline. Y-axis labels right-aligned to the axis with 8px gap; X-axis labels centred on the tick, 6px below the baseline. Tick labels are information carriers, not chrome — they must be plainly readable.
 - **No frame rectangle.** A box around the plot adds two redundant axes. The plot is bounded by data, axis, and whitespace — not by a fourth-wall border.
 
 If a chart library default violates this contract, override the styles via `tokens.js`. Do not work around the contract by relabelling "axis" and "gridline" — the visual roles are what matters.
 
-### 7.4 Alerts / callouts
+### 7.6 Axis-only chart
+
+A chart with **no gridlines** — sparkline, embedded inline-chart, dense small-multiples grid, mini-trend in a table cell. Gridlines are absent because the chart is too small for them to read, or because the surrounding text already carries the coordinate context. The axis becomes the chart's only visible armature, and the rules from §7.5 shift accordingly.
+
+- **Axis line.** Step up from the §7.5 default. Use 1px `--ink-soft`, never `--rule` — without gridlines, an `--rule`-weight axis vanishes and the chart appears to float without a baseline. The axis must visibly anchor the data.
+- **Axis presence.** Single horizontal baseline minimum. A vertical axis is included only when scale matters (most sparklines have no Y axis at all — the shape carries the read).
+- **Tick labels.** Sparser than §7.5: typically just min and max on each axis, or first and last data points. Mono 11px `--data-axis`. If the chart is small enough that even two labels collide, omit them entirely and rely on a mono caption underneath the chart (`30D · 0.42–0.91`).
+- **Endpoints.** A 3px filled dot in `--accent` at the latest data point, when the chart's purpose is "what is the current value." Otherwise no point markers — the line is enough.
+- **Annotations.** Forbidden. If a sparkline needs an annotation, it has outgrown the format and wants to be a §7.3 chart.
+- **Spacing around.** A sparkline is text-grade content — vertical-align with the surrounding line height, no captions floating above. If captioned, mono 11px `--ink-soft` directly underneath, no gap above the chart.
+
+**When to use vs §7.3 / §7.5.** If the chart is bigger than ~120×40 px, or carries more than one series, or asks the reader to compare specific values across the X axis, it wants gridlines and §7.5 applies. Axis-only is for the case where the chart is a *glyph* — read at a glance, anchored by a baseline, used in-line with text or in a dense grid.
+
+**Reference.** Embedded inline charts in `webapp/src/blocks/` operate in this regime; `components/chart-helpers.html` will gain a sparkline example in v0.6.
+
+### 7.7 Alerts / callouts
 
 Three severities share one layout: `[mono severity label] [body message] [optional action →]`. No icons. No rounded-card-with-left-border accent (that's the antipattern). Horizontal hairlines top and bottom.
 
@@ -301,15 +377,15 @@ Three severities share one layout: `[mono severity label] [body message] [option
 
 See `components/alert.html`.
 
-### 7.5 Status pills
+### 7.8 Status pills
 
 Inline marker — 6px dot + mono uppercase label, colour from severity token. No filled background, no rounded rectangle. Used inside table cells, card headers, service lists. See `components/status-pill.html`.
 
-### 7.6 Search input
+### 7.9 Search input
 
 No magnifier icon (iconography is outside the DS voice). Use a mono `/` prefix inside the field — a Vim/Slack-style signal that reads as "search" without decoration. Underline becomes `--accent` on focus. Optional `⌘K` hint in a bordered `<kbd>` on the right. See `components/search-input.html`.
 
-### 7.7 Dense layout mode
+### 7.10 Dense layout mode
 
 The editorial scale (`--gutter: 64px` / `--section-pad: 96px` / `--max-width: 1320px`) is too airy for dashboards. Dense mode is a **parallel** scale — activate with `<body class="dense">` or apply the dense tokens to a specific container. Do not redefine the editorial tokens locally.
 
@@ -322,11 +398,11 @@ The editorial scale (`--gutter: 64px` / `--section-pad: 96px` / `--max-width: 13
 
 Grid: prefer `grid-template-columns: repeat(auto-fit, minmax(320px, 1fr))` with `gap: var(--gutter-dense)`. A formal 12-column is overkill for most dashboard compositions; minmax lets cards reflow honestly.
 
-### 7.8 Form controls, modals, skeletons
+### 7.11 Form controls, modals, skeletons
 
 Deferred to project-level until a real need arises. When you build them, follow the same principles: hairlines over fills, mono for labels, body for inputs, `--accent` only on focus/active. Modals are explicitly **not** in the DS — their behaviour varies too much across product contexts (side sheet vs centered vs full-bleed). Design per-project.
 
-### 7.9 JS chart libraries
+### 7.12 JS chart libraries
 
 Libraries like Recharts, Chart.js, and D3 take hex strings via props, not CSS variables. Use `tokens.js` to read tokens at runtime and re-read on theme change:
 
