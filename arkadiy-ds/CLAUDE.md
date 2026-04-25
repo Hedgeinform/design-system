@@ -17,7 +17,7 @@ This project uses **arkadiy-ds**, the personal design system for Arkadiy Schenni
 - Manrope for display + body. IBM Plex Mono **only** for UI labels (eyebrows, meta rows, figure captions). Never Inter/Roboto/system-sans.
 - One accent colour (coral). Never introduce a second hue.
 - No gradients. No emoji as brand. No drop shadows. No rounded-card-with-left-border-accent.
-- The Euler identity `eⁱπ + 1 = 0` is the wordmark. Centered in sticky topbar on every page. Do not replace.
+- The Euler identity `eⁱπ + 1 = 0` is the wordmark (§8.2). The personal monogram (geometric AS, §8.1) is the operator's signature. Default topbar carries both — Euler centered, monogram in the left slot before the project name. Any combination is permitted at project discretion: omit either, or both. Use `components/topbar.html` (default) and `components/monogram.html` (drop-in) as canon. The monogram is an inline SVG with baked-in `skewX(-8°)`; never load it via `<img>` (currentColor breaks).
 - Decorations (FFT spectrum, Lissajous, phase portrait, polar ring) are brand signal, not data. Bottom-right of Hero or section corner, `opacity ≤ 0.9`, `vw ≥ 1100px` guard.
 
 ## Data surfaces (dashboards, tables, charts):
@@ -31,7 +31,7 @@ Read **§7 of `DESIGN-SYSTEM.md`** before building anything data-heavy. Short ve
 - **Positive metric colour** (§7.1a): `--positive` / `--state-positive` (warm olive) is the ONE allowed exception to single-accent. Use only when (1) data surface, (2) directional "high = good" metric, (3) discrete visualization (bar/pill/dot, never line). Never combined with warn/crit in the same chart.
 - **Search input**: mono `/` prefix, no magnifier icon.
 - **Dense mode**: use `--gutter-dense`, `--section-pad-dense`, `--max-width-dense: none`. Activate with `<body class="dense">`. Don't redefine editorial tokens locally.
-- **Internal vs branded**: private/admin surfaces use a minimal topbar (no Euler wordmark). Public/branded surfaces keep the full topbar.
+- **Topbar identity (§8)**: default state carries both Euler (center) + personal monogram (left). Internal/admin surfaces may omit either or both — it's an editorial choice, not a public/private switch. Document the omission in the project's notes if it matters.
 
 ## JS chart libraries (Recharts, Chart.js, D3):
 

@@ -1,6 +1,11 @@
 <!-- =============================================================
      arkadiy-ds / components / topbar.html
-     Sticky top chrome. Logo-less — the Euler identity IS the wordmark.
+     Sticky top chrome. Carries up to two identity marks per §8:
+       • Center — Euler wordmark (brand of the practice)
+       • Left   — Personal monogram (signature of the operator)
+     Default state: both present. Any combination is permitted at
+     project discretion — omit either, or both. To omit a mark, delete
+     its element below; the layout re-flows naturally.
      Replace all {{PLACEHOLDER}} tokens with your project's strings.
      Requires tokens.css + typography.css (or equivalent vars).
      ============================================================= -->
@@ -23,9 +28,21 @@
     font-family: var(--font-mono); font-size: var(--meta-size);
     letter-spacing: var(--meta-tracking); text-transform: uppercase;
   }
-  .ads-topbar-left  { text-align: left; }
+  .ads-topbar-left  {
+    display: flex; align-items: center; gap: 14px;
+    text-align: left;
+  }
+  .ads-topbar-left .sep { color: var(--ink-faint); }
   .ads-topbar-right { display: flex; justify-content: flex-end; align-items: center; gap: 18px; }
   .ads-topbar-right a { color: var(--ink); text-decoration: none; }
+
+  /* Personal monogram — §8.1. Inline SVG so currentColor inherits. */
+  .ads-topbar-monogram {
+    display: inline-flex; align-items: center;
+    color: var(--accent);
+    transition: color 300ms ease;
+  }
+  .ads-topbar-monogram svg { display: block; }
 
   /* The Euler watermark — always centered, always present. This is the brand. */
   .ads-topbar-euler {
@@ -56,9 +73,22 @@
 
 <div class="ads-topbar">
   <div class="ads-topbar-inner">
-    <span class="ads-topbar-left">{{NAME}} · {{TAGLINE}}</span>
+    <span class="ads-topbar-left">
+      <!-- Personal monogram (§8.1). Omit this <span> for an Euler-only topbar. -->
+      <span class="ads-topbar-monogram" aria-label="AS">
+        <svg viewBox="0 0 28 28" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.4">
+          <g transform="skewX(-8)">
+            <path d="M 3 24 L 11 4 L 19 24 M 6 17 L 16 17"/>
+            <path d="M 25 8 Q 25 4 20 4 Q 15 4 15 8 Q 15 12 20 13 Q 25 14 25 19 Q 25 24 20 24 Q 15 24 15 20"/>
+          </g>
+        </svg>
+      </span>
+      <span class="sep">·</span>
+      <span>{{NAME}} · {{TAGLINE}}</span>
+    </span>
 
-    <!-- Euler's identity — e^(iπ) + 1 = 0 — the wordmark. Do not replace. -->
+    <!-- Euler's identity — e^(iπ) + 1 = 0 — the wordmark (§8.2).
+         Omit this <a> for a monogram-only topbar; the centre column collapses. -->
     <a href="#euler" class="ads-topbar-euler"
        title="Euler's identity — the standard this practice is held to.">
       e<sup>i&pi;</sup> + 1 = 0

@@ -23,6 +23,7 @@
 >     | 7.9 | 7.12 | JS chart libraries |
 >
 >     Cross-references inside the document updated. Downstream consumers of the DS (notably `Hedgeinform/hedgedasbord` ARCHITECTURE.md OV3/OV4/OV5) must update inbound `§7.x` references when they pull v0.6.
+>   - **Delivery layer: self-hosted fonts.** `arkadiy-ds/fonts/` now ships twelve woff2 files (Manrope 400/500/600/700, IBM Plex Mono 400/500, latin + cyrillic). `typography.css` carries the `@font-face` block with `font-display: swap` and metric-matched synthetic fallbacks (`Manrope Fallback`, `IBM Plex Mono Fallback`) so the swap is visually quiet — no layout shift at font-load. Google Fonts CDN is downgraded from primary install path to "prototypes only" with a CSP/GDPR caveat. This is a delivery-layer change, not a DS change — the type system itself is unchanged. Downstream consequence: `Hedgeinform/hedgedasbord` OV3 (Google Fonts) is no longer an override against DS; it can be retired and replaced with the standard self-hosted include.
 > - **0.5** — Field-reconciliation pass against the live dashboard (commit 497a0f3). Five points resolved across two categories.
 >   - **Corrections** (DS was wrong, dashboard was right):
 >     - **§7.11 axis ≥ gridline** — strict inequality relaxed to "axis ≥ gridline, equality permitted when both are quiet enough not to compete with data." Axis must never be *weaker* than gridlines; equality is fine.
@@ -422,7 +423,7 @@ Never hardcode hex values in JS — the dark↔light toggle will desync.
 The topbar carries up to two identity marks, in two distinct slots:
 
 - **Center — Euler wordmark** (`eⁱπ + 1 = 0`). Brand of the practice.
-- **Left — Personal monogram** (italic AS). Signature of the operator.
+- **Left — Personal monogram** (geometric AS line-art mark, §8.1). Signature of the operator.
 
 **Default state:** both present. The pair reads as "practice + author" — the work happens inside Arkadiy's practice and was assembled by Arkadiy specifically.
 
@@ -438,15 +439,19 @@ If in doubt, default to both. Removing chrome is an editorial choice, not a defa
 
 ### 8.1 Monogram — style rules
 
-- Manrope italic, weight 500, 18–20px, color `--accent`.
-- `letter-spacing: -0.05em` (denser than running italic — reads as a signature, not a word).
-- Sits in the **left** topbar slot, before the project name, separated by `·` in `--ink-faint`.
-- Never in the center slot (that's Euler's place; if Euler is omitted, the centre stays empty).
-- Never larger than 24px (becomes a logo).
-- Never duplicated within a single page.
-- Never on `--accent-soft` surface (the tinted background eats the italic glyph).
+The monogram is a **geometric line-art SVG** shipped at `arkadiy-ds/monogram.svg`. Source: `brand/monogram.svg` (canonical, identical content).
 
-**Aspirational visual:** an interlocked / shared-baseline ligature glyph delivered as a custom SVG or hand-tuned font asset. Italic letters are the base case; promote to ligature when the asset exists. The promotion is invisible to consuming projects — same slot, same size, same colour.
+- 28×28 viewBox, two stroked paths — A as triangle + crossbar, S as a single bezier ribbon.
+- `stroke: currentColor`, `stroke-width: 1.4`, `fill: none`. Color comes from the consuming context (`var(--accent)` on dark surfaces, `var(--ink)` on tinted ones).
+- Baked-in **`skewX(-8°)`** on the inner `<g>` — rhymes with the italic Euler wordmark. The skew is part of the asset; do not stack a second transform on top.
+- **Embed inline as `<svg>`**, not via `<img src="monogram.svg">`. `<img>`-loaded SVGs render in an isolated context and `currentColor` will fall back to black on every dark surface.
+- Sits in the **left** topbar slot, before the project name, separated by `·` in `--ink-faint`.
+- **Sizes:** 14px (meta line), 22px (topbar — default), 36px (section header), 84px (hero / favicon source). Never larger than ≈ 88px (becomes a logo).
+- Never in the center slot (that's Euler's place; if Euler is omitted, the centre stays empty).
+- Never duplicated within a single page.
+- Never on `--accent-soft` surface (the tinted background eats the stroke at small sizes — ink at small sizes if you must).
+
+Reference: `components/monogram.html` (drop-in snippet at the topbar default size).
 
 ### 8.2 Euler — style rules
 

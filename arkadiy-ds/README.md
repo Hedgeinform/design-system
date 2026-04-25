@@ -11,7 +11,8 @@ arkadiy-ds/
 ├── typography.css          Typographic classes built on tokens
 ├── fonts/                  Self-hosted woff2 — Manrope (4 weights) + IBM Plex Mono (2 weights), latin + cyrillic
 ├── components/
-│   ├── topbar.html         Sticky top chrome + Euler wordmark + theme toggle
+│   ├── topbar.html         Sticky top chrome — monogram (left) + Euler wordmark (center) + theme toggle (§8)
+│   ├── monogram.html       Personal monogram — inline SVG drop-in, baked 8° skew (§8.1)
 │   ├── Hero.jsx            Hero pattern: eyebrow / tagline / lede / CTAs / decoration
 │   ├── WritingCard.jsx     Index-table rows for essays + newsletter
 │   ├── footer.html         Four-column footer + meta strip
@@ -66,7 +67,7 @@ When tokens change here, every project that copied this folder is out of date. T
 ## Philosophy (short version)
 
 - Two themes (dark default, light), one typeface family (Manrope + IBM Plex Mono), one accent (coral).
-- Euler's identity `eⁱπ + 1 = 0` is the wordmark. Do not replace.
+- The Euler identity `eⁱπ + 1 = 0` is the wordmark; the geometric AS monogram is the operator's signature. Default topbar carries both; any combination may be omitted at project discretion (§8).
 - Technical voice comes from typography and small SVG plots, not icons or gradients.
 - Data surfaces follow the same rule: severity is typographic + coral-opacity; one accent; hairlines, not fills.
 - See `DESIGN-SYSTEM.md` for the full story; `Landing.html` and `Dashboard-reference.html` for composed examples.
