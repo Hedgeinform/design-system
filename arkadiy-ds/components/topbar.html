@@ -1,0 +1,97 @@
+<!-- =============================================================
+     arkadiy-ds / components / topbar.html
+     Sticky top chrome. Logo-less — the Euler identity IS the wordmark.
+     Replace all {{PLACEHOLDER}} tokens with your project's strings.
+     Requires tokens.css + typography.css (or equivalent vars).
+     ============================================================= -->
+
+<style>
+  .ads-topbar {
+    position: sticky; top: 0; z-index: 50;
+    backdrop-filter: blur(10px);
+    background: rgb(from var(--bg) r g b / 0.82);
+    border-bottom: 1px solid var(--rule);
+    color: var(--ink-soft);
+    transition: background 300ms ease, border-color 300ms ease, color 300ms ease;
+  }
+  .ads-topbar-inner {
+    max-width: var(--max-width);
+    margin: 0 auto;
+    padding: 14px var(--gutter);
+    display: grid; grid-template-columns: 1fr auto 1fr;
+    align-items: center;
+    font-family: var(--font-mono); font-size: var(--meta-size);
+    letter-spacing: var(--meta-tracking); text-transform: uppercase;
+  }
+  .ads-topbar-left  { text-align: left; }
+  .ads-topbar-right { display: flex; justify-content: flex-end; align-items: center; gap: 18px; }
+  .ads-topbar-right a { color: var(--ink); text-decoration: none; }
+
+  /* The Euler watermark — always centered, always present. This is the brand. */
+  .ads-topbar-euler {
+    font-family: var(--font-display);
+    font-style: italic; font-size: 17px; letter-spacing: 0.3px;
+    text-transform: none; line-height: 1; white-space: nowrap;
+    text-decoration: none; color: var(--accent);
+    transition: color 300ms ease;
+  }
+  .ads-topbar-euler sup { font-style: italic; font-size: 0.7em; }
+
+  /* Optional theme toggle — remove if the page is single-theme. */
+  .ads-theme-toggle {
+    background: transparent; border: 1px solid var(--rule);
+    color: var(--ink-soft);
+    font-family: var(--font-mono); font-size: 10px;
+    letter-spacing: 1px; text-transform: uppercase;
+    padding: 5px 9px; cursor: pointer; line-height: 1;
+    display: inline-flex; align-items: center; gap: 7px;
+    transition: border-color 200ms ease, color 200ms ease;
+  }
+  .ads-theme-toggle:hover { color: var(--ink); }
+  .ads-theme-toggle .dot {
+    width: 8px; height: 8px; border-radius: 50%;
+    background: var(--accent);
+  }
+</style>
+
+<div class="ads-topbar">
+  <div class="ads-topbar-inner">
+    <span class="ads-topbar-left">{{NAME}} · {{TAGLINE}}</span>
+
+    <!-- Euler's identity — e^(iπ) + 1 = 0 — the wordmark. Do not replace. -->
+    <a href="#euler" class="ads-topbar-euler"
+       title="Euler's identity — the standard this practice is held to.">
+      e<sup>i&pi;</sup> + 1 = 0
+    </a>
+
+    <span class="ads-topbar-right">
+      <a href="#writing">{{NAV_1}}</a>
+      <a href="#work">{{NAV_2}}</a>
+      <a href="#contact">{{NAV_3}}</a>
+      <button class="ads-theme-toggle" id="theme-toggle" aria-label="Toggle theme">
+        <span class="dot"></span>
+        <span class="label">Dark</span>
+      </button>
+    </span>
+  </div>
+</div>
+
+<script>
+  // Theme toggle — applies data-theme to <html>, persists to localStorage.
+  // Tokens.css reads [data-theme="light"] automatically.
+  (function(){
+    var html = document.documentElement;
+    var saved = null; try { saved = localStorage.getItem('theme'); } catch(e){}
+    html.setAttribute('data-theme', saved === 'light' ? 'light' : 'dark');
+    var btn = document.getElementById('theme-toggle');
+    var label = btn && btn.querySelector('.label');
+    function sync(){ if (label) label.textContent = html.getAttribute('data-theme') === 'light' ? 'Light' : 'Dark'; }
+    sync();
+    if (btn) btn.addEventListener('click', function(){
+      var next = html.getAttribute('data-theme') === 'light' ? 'dark' : 'light';
+      html.setAttribute('data-theme', next);
+      try { localStorage.setItem('theme', next); } catch(e){}
+      sync();
+    });
+  })();
+</script>

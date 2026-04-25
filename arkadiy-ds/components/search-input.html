@@ -1,0 +1,49 @@
+<!-- =============================================================
+     arkadiy-ds / components / search-input.html
+     Search field — Vim/Slack prefix pattern instead of a magnifier icon.
+     The `/` prefix is a mono-typographic signal that replaces iconography.
+     Focused state: underline becomes --accent.
+     ============================================================= -->
+
+<style>
+  .ads-search {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    padding: 8px 0;
+    border-bottom: 1px solid var(--rule);
+    transition: border-color 160ms ease;
+    min-width: 280px;
+  }
+  .ads-search:focus-within { border-bottom-color: var(--accent); }
+  .ads-search .ads-search-prefix {
+    font-family: var(--font-mono);
+    font-size: 13px;
+    color: var(--ink-soft);
+    user-select: none;
+  }
+  .ads-search input {
+    flex: 1;
+    border: 0; outline: 0; background: transparent;
+    font-family: var(--font-body);
+    font-size: 15px;
+    color: var(--ink);
+    padding: 2px 0;
+  }
+  .ads-search input::placeholder { color: var(--ink-faint); }
+  .ads-search kbd {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    letter-spacing: 0.5px;
+    color: var(--ink-soft);
+    padding: 2px 6px;
+    border: 1px solid var(--rule);
+    text-transform: uppercase;
+  }
+</style>
+
+<label class="ads-search" for="ads-search-input">
+  <span class="ads-search-prefix" aria-hidden="true">/</span>
+  <input id="ads-search-input" type="search" placeholder="filter services, regions, owners">
+  <kbd>⌘K</kbd>
+</label>

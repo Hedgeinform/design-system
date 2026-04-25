@@ -1,0 +1,140 @@
+<!-- =============================================================
+     arkadiy-ds / components / chart-helpers.html
+     Hand-rolled SVG chart primitives that read from tokens.js.
+     Why not Recharts/Chart.js? Because those libraries ship with
+     defaults you then have to fight. These are 200 lines, themed,
+     and respect tokens. If you need a bar chart, copy and adapt.
+
+     Rules (from DESIGN-SYSTEM.md §7):
+       · Single series → --accent at 100%.
+       · Multi-series  → seriesColors(n): 100/60/30% coral.
+       · Gridlines     → --data-grid, 1px, horizontal only.
+       · Axis labels   → mono 11px, --data-axis.
+       · Tooltips      → --bg-elev surface, 1px --rule, no shadow.
+     ============================================================= -->
+
+<style>
+  .ads-chart-card {
+    border: 1px solid var(--rule);
+    padding: 20px;
+    background: var(--bg);
+  }
+  .ads-chart-card .ads-chart-head {
+    display: flex; justify-content: space-between; align-items: baseline;
+    margin-bottom: 16px;
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: 0.8px;
+    text-transform: uppercase;
+    color: var(--ink-soft);
+  }
+  .ads-chart-card .ads-chart-head .ads-chart-title { color: var(--ink); }
+  .ads-chart-card .ads-chart-head .ads-chart-meta  { color: var(--ink-soft); }
+
+  .ads-chart-card svg { width: 100%; height: auto; display: block; }
+  .ads-chart-card .axis text { font-family: var(--font-mono); font-size: 11px; fill: var(--data-axis); }
+  .ads-chart-card .gridline { stroke: var(--data-grid); stroke-width: 1; }
+  .ads-chart-card .series-line { fill: none; stroke-width: 1.5; }
+  .ads-chart-card .series-dot  { r: 2.5; }
+  .ads-chart-card .legend {
+    display: flex; gap: 18px; margin-top: 14px;
+    font-family: var(--font-mono); font-size: 11px;
+    letter-spacing: 0.6px; text-transform: uppercase;
+    color: var(--ink-soft);
+  }
+  .ads-chart-card .legend .swatch {
+    display: inline-block; width: 18px; height: 2px;
+    margin-right: 7px; vertical-align: middle;
+  }
+
+  .ads-tooltip {
+    position: absolute;
+    background: var(--bg-elev);
+    border: 1px solid var(--rule);
+    padding: 10px 14px;
+    font-family: var(--font-body);
+    font-size: 14px;
+    color: var(--ink);
+    pointer-events: none;
+    white-space: nowrap;
+  }
+  .ads-tooltip .label {
+    display: block;
+    font-family: var(--font-mono);
+    font-size: 10px;
+    letter-spacing: 0.6px;
+    text-transform: uppercase;
+    color: var(--ink-soft);
+    margin-bottom: 4px;
+  }
+  .ads-tooltip .value {
+    font-variant-numeric: tabular-nums;
+  }
+</style>
+
+<!-- Example usage. Copy/adapt the <svg> directly per chart.
+     Series data is hand-authored. No runtime generation here —
+     this is a reference to read, not a framework to extend. -->
+
+<div class="ads-chart-card">
+  <div class="ads-chart-head">
+    <span class="ads-chart-title">P95 latency — api-gateway</span>
+    <span class="ads-chart-meta">Last 24h · ms</span>
+  </div>
+
+  <svg viewBox="0 0 800 240" preserveAspectRatio="none" aria-label="Latency chart">
+    <!-- Gridlines (4 horizontals) -->
+    <g class="axis">
+      <line class="gridline" x1="40" x2="780" y1="40"  y2="40" />
+      <line class="gridline" x1="40" x2="780" y1="100" y2="100" />
+      <line class="gridline" x1="40" x2="780" y1="160" y2="160" />
+      <line class="gridline" x1="40" x2="780" y1="220" y2="220" />
+      <!-- Y labels -->
+      <text x="0" y="44">150</text>
+      <text x="0" y="104">100</text>
+      <text x="0" y="164">50</text>
+      <text x="0" y="224">0</text>
+      <!-- X labels -->
+      <text x="40"  y="238" text-anchor="start">00:00</text>
+      <text x="410" y="238" text-anchor="middle">12:00</text>
+      <text x="780" y="238" text-anchor="end">24:00</text>
+    </g>
+
+    <!-- Series 1 — --accent, 100% -->
+    <path class="series-line"
+          d="M40,180 L100,170 L160,175 L220,160 L280,150 L340,145 L400,120 L460,115 L520,128 L580,110 L640,95 L700,105 L760,92"
+          style="stroke: var(--accent);" />
+
+    <!-- Series 2 — --accent 60% -->
+    <path class="series-line"
+          d="M40,200 L100,195 L160,190 L220,185 L280,178 L340,175 L400,170 L460,168 L520,165 L580,162 L640,158 L700,155 L760,150"
+          style="stroke: rgb(from var(--accent) r g b / 0.6);" />
+  </svg>
+
+  <div class="legend">
+    <span><span class="swatch" style="background: var(--accent);"></span>p95</span>
+    <span><span class="swatch" style="background: rgb(from var(--accent) r g b / 0.6);"></span>p50</span>
+  </div>
+</div>
+
+<!--
+  JS integration — for when you DO use Recharts / Chart.js:
+  
+  <script type="module">
+    import { seriesColors, getTokens, onThemeChange } from '/arkadiy-ds/tokens.js';
+
+    function build() {
+      const T = getTokens();
+      const colors = seriesColors(2);           // ['rgb(from ... / 1)', 'rgb(from ... / 0.6)']
+      myChart.update({
+        colors,
+        axisColor: T.dataAxis,
+        gridColor: T.dataGrid,
+        tooltipBg: T.bgElev,
+        tooltipText: T.ink,
+        fontMono: T.fontMono,
+      });
+    }
+    onThemeChange(build);   // auto re-theme on dark/light toggle
+  </script>
+-->

@@ -1,0 +1,73 @@
+<!-- =============================================================
+     arkadiy-ds / components / alert.html
+     Callout / alert. Three severities: ok (rare), warn, crit.
+     Layout: mono-label severity · body message · optional link-arrow.
+     No icon. No rounded left-border accent. No background tint for OK/WARN;
+     CRIT uses --accent-soft (the only tinted surface in the system).
+     ============================================================= -->
+
+<style>
+  .ads-alert {
+    display: grid;
+    grid-template-columns: 80px 1fr auto;
+    gap: 18px;
+    align-items: baseline;
+    padding: 16px 18px;
+    border-top: 1px solid var(--rule);
+    border-bottom: 1px solid var(--rule);
+    color: var(--ink);
+    font-family: var(--font-body);
+    font-size: 15px;
+    line-height: 1.5;
+  }
+  .ads-alert .ads-alert-sev {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: 0.8px;
+    text-transform: uppercase;
+  }
+  .ads-alert .ads-alert-msg {
+    color: var(--ink);
+  }
+  .ads-alert .ads-alert-msg small {
+    display: block;
+    margin-top: 4px;
+    font-size: 13px;
+    color: var(--ink-soft);
+  }
+  .ads-alert .ads-alert-action {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: 0.6px;
+    text-transform: uppercase;
+    color: var(--accent);
+    text-decoration: none;
+    border-bottom: 1px solid var(--accent);
+    padding-bottom: 2px;
+  }
+
+  .ads-alert-ok   .ads-alert-sev { color: var(--state-ok); }
+  .ads-alert-warn .ads-alert-sev { color: var(--state-warn); }
+  .ads-alert-crit .ads-alert-sev { color: var(--state-crit); }
+  .ads-alert-crit { background: var(--accent-soft); }
+</style>
+
+<!-- WARN — typographic only, no tint -->
+<div class="ads-alert ads-alert-warn">
+  <span class="ads-alert-sev">WARN</span>
+  <div class="ads-alert-msg">
+    worker-ingest latency trending up.
+    <small>p95 crossed 100 ms threshold 12 minutes ago · us-east-1</small>
+  </div>
+  <a class="ads-alert-action" href="#">Inspect →</a>
+</div>
+
+<!-- CRIT — accent-soft tinted surface, --accent on label. -->
+<div class="ads-alert ads-alert-crit" style="margin-top: 14px;">
+  <span class="ads-alert-sev">CRIT</span>
+  <div class="ads-alert-msg">
+    queue-primary is unreachable.
+    <small>Error rate 8.1% · connection refused · paging on-call</small>
+  </div>
+  <a class="ads-alert-action" href="#">Runbook →</a>
+</div>

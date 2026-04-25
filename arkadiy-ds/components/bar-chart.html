@@ -1,0 +1,133 @@
+<!-- =============================================================
+     arkadiy-ds / components / bar-chart.html
+     Bar-chart reference. Three flavours:
+       1. Single-series — one metric over time, --accent fill.
+       2. Severity-coloured — each bar carries its own state (norm/warn/crit).
+       3. Positive-coloured — directional "high = good" metric (§7.1a only).
+     Plus: dashed threshold line, bin-histogram.
+     See DESIGN-SYSTEM.md §7.3a for applicability rules.
+     ============================================================= -->
+
+<style>
+  .ads-bar-card { border: 1px solid var(--rule); padding: 20px; background: var(--bg); }
+  .ads-bar-head {
+    display: flex; justify-content: space-between; align-items: baseline;
+    margin-bottom: 16px;
+    font-family: var(--font-mono); font-size: 11px;
+    letter-spacing: 0.8px; text-transform: uppercase; color: var(--ink-soft);
+  }
+  .ads-bar-head .title { color: var(--ink); }
+  .ads-bar-card svg { width: 100%; height: auto; display: block; }
+  .ads-bar-card .axis text { font-family: var(--font-mono); font-size: 11px; fill: var(--data-axis); }
+  .ads-bar-card .gridline { stroke: var(--data-grid); stroke-width: 1; }
+  .ads-bar-card .threshold { stroke: var(--accent); stroke-width: 1; stroke-dasharray: 3 3; }
+  .ads-bar-card .bar        { fill: var(--accent); }
+  .ads-bar-card .bar-norm   { fill: var(--ink-soft); }
+  .ads-bar-card .bar-warn   { fill: rgb(from var(--accent) r g b / 0.4); }
+  .ads-bar-card .bar-crit   { fill: var(--accent); }
+  .ads-bar-card .bar-positive { fill: var(--state-positive); }
+  .ads-bar-card .legend {
+    display: flex; gap: 18px; margin-top: 14px;
+    font-family: var(--font-mono); font-size: 11px;
+    letter-spacing: 0.6px; text-transform: uppercase; color: var(--ink-soft);
+  }
+  .ads-bar-card .legend .swatch { display: inline-block; width: 12px; height: 10px; margin-right: 7px; vertical-align: middle; }
+</style>
+
+<!-- FLAVOUR 1: Single-series, severity-coloured bars + threshold line.
+     Use for metrics where each bar is a discrete observation with its own state. -->
+<div class="ads-bar-card">
+  <div class="ads-bar-head">
+    <span class="title">Work hours — by day</span>
+    <span>Target: 8h · 7d</span>
+  </div>
+  <svg viewBox="0 0 800 240" preserveAspectRatio="none">
+    <g class="axis">
+      <line class="gridline" x1="40" x2="780" y1="40"  y2="40" />
+      <line class="gridline" x1="40" x2="780" y1="100" y2="100" />
+      <line class="gridline" x1="40" x2="780" y1="160" y2="160" />
+      <line class="gridline" x1="40" x2="780" y1="220" y2="220" />
+      <text x="30" y="44"  text-anchor="end">16</text>
+      <text x="30" y="104" text-anchor="end">12</text>
+      <text x="30" y="164" text-anchor="end">8</text>
+      <text x="30" y="224" text-anchor="end">0</text>
+      <text x="92"  y="238" text-anchor="middle">04-12</text>
+      <text x="192" y="238" text-anchor="middle">04-13</text>
+      <text x="292" y="238" text-anchor="middle">04-14</text>
+      <text x="392" y="238" text-anchor="middle">04-15</text>
+      <text x="492" y="238" text-anchor="middle">04-16</text>
+      <text x="592" y="238" text-anchor="middle">04-17</text>
+      <text x="692" y="238" text-anchor="middle">04-18</text>
+    </g>
+    <!-- Threshold at 8h -->
+    <line class="threshold" x1="40" x2="780" y1="160" y2="160" />
+    <!-- 8h norm / 12h warn / 9h norm / 14h crit / 8h norm / 7h norm / 8h norm -->
+    <rect class="bar-norm" x="55"  y="160" width="74" height="60" />
+    <rect class="bar-warn" x="155" y="100" width="74" height="120" />
+    <rect class="bar-norm" x="255" y="145" width="74" height="75" />
+    <rect class="bar-crit" x="355" y="70"  width="74" height="150" />
+    <rect class="bar-norm" x="455" y="160" width="74" height="60" />
+    <rect class="bar-norm" x="555" y="175" width="74" height="45" />
+    <rect class="bar-norm" x="655" y="160" width="74" height="60" />
+  </svg>
+  <div class="legend">
+    <span><span class="swatch bar-norm"></span>Within range</span>
+    <span><span class="swatch bar-warn"></span>Over target</span>
+    <span><span class="swatch bar-crit"></span>Critical</span>
+    <span style="margin-left: auto; color: var(--accent);">— — — target</span>
+  </div>
+</div>
+
+<!-- FLAVOUR 2: Positive metric — one directional colour. §7.1a.
+     Use for "high = good" metrics where there's no negative state to distinguish. -->
+<div class="ads-bar-card" style="margin-top: 14px;">
+  <div class="ads-bar-head">
+    <span class="title">Physical activity — minutes</span>
+    <span>7d</span>
+  </div>
+  <svg viewBox="0 0 800 200" preserveAspectRatio="none">
+    <g class="axis">
+      <line class="gridline" x1="40" x2="780" y1="40"  y2="40" />
+      <line class="gridline" x1="40" x2="780" y1="100" y2="100" />
+      <line class="gridline" x1="40" x2="780" y1="160" y2="160" />
+      <text x="30" y="44"  text-anchor="end">60</text>
+      <text x="30" y="104" text-anchor="end">30</text>
+      <text x="30" y="164" text-anchor="end">0</text>
+    </g>
+    <rect class="bar-positive" x="55"  y="50"  width="74" height="110" />
+    <rect class="bar-positive" x="155" y="85"  width="74" height="75" />
+    <rect class="bar-positive" x="255" y="40"  width="74" height="120" />
+    <rect class="bar-positive" x="355" y="60"  width="74" height="100" />
+    <rect class="bar-positive" x="455" y="45"  width="74" height="115" />
+    <rect class="bar-positive" x="555" y="110" width="74" height="50" />
+    <rect class="bar-positive" x="655" y="55"  width="74" height="105" />
+  </svg>
+</div>
+
+<!-- FLAVOUR 3: Bin histogram (distribution) — single-series. -->
+<div class="ads-bar-card" style="margin-top: 14px;">
+  <div class="ads-bar-head">
+    <span class="title">Rating distribution</span>
+    <span>n=14 · bins of 2</span>
+  </div>
+  <svg viewBox="0 0 800 200" preserveAspectRatio="none">
+    <g class="axis">
+      <line class="gridline" x1="40" x2="780" y1="40"  y2="40" />
+      <line class="gridline" x1="40" x2="780" y1="100" y2="100" />
+      <line class="gridline" x1="40" x2="780" y1="160" y2="160" />
+      <text x="30" y="44"  text-anchor="end">6</text>
+      <text x="30" y="104" text-anchor="end">3</text>
+      <text x="30" y="164" text-anchor="end">0</text>
+      <text x="140" y="182" text-anchor="middle">1–2</text>
+      <text x="286" y="182" text-anchor="middle">3–4</text>
+      <text x="432" y="182" text-anchor="middle">5–6</text>
+      <text x="578" y="182" text-anchor="middle">7–8</text>
+      <text x="724" y="182" text-anchor="middle">9–10</text>
+    </g>
+    <rect class="bar" x="70"  y="140" width="140" height="20" />
+    <rect class="bar" x="216" y="110" width="140" height="50" />
+    <rect class="bar" x="362" y="80"  width="140" height="80" />
+    <rect class="bar" x="508" y="60"  width="140" height="100" />
+    <rect class="bar" x="654" y="130" width="140" height="30" />
+  </svg>
+</div>

@@ -1,0 +1,119 @@
+/* =============================================================
+   arkadiy-ds / tokens.css
+   Design tokens for Arkadiy Schennikov's independent practice.
+   One file, two themes (dark default, light via [data-theme="light"]).
+   Copy this into a new project, link it in <head>, done.
+   ============================================================= */
+
+/* ---------- DARK (default) — "warm coal" ---------- */
+:root,
+:root[data-theme="dark"] {
+  /* surface */
+  --bg:        #141110;  /* page background — warm coal, never pure black */
+  --bg-elev:   #1a1715;  /* subtly raised (cards, tooltips) */
+  --accent-soft:#2e201a; /* tinted surface behind callouts, inputs, etc. */
+
+  /* text */
+  --ink:       #ede5d8;  /* primary text — warm cream */
+  --ink-soft:  #968c7a;  /* muted text, eyebrows, meta */
+  --ink-faint: #322a25;  /* nearly-hidden text, disabled, ghost numerals */
+
+  /* structure */
+  --rule:      #241f1b;  /* 1px borders, dividers, hairlines */
+
+  /* signal */
+  --accent:    #f5936a;  /* coral-peach — THE signal color. Use sparingly. */
+
+  /* positive — directional metric "high = good". Data surfaces only.
+     See DESIGN-SYSTEM.md §7.1a for strict applicability rules. */
+  --positive:  #8fa677;  /* muted warm olive — sits beside coral without jangling */
+  --positive-soft: #2a2e22;
+}
+
+/* ---------- LIGHT — "warm paper" ---------- */
+:root[data-theme="light"] {
+  --bg:        #f4ecdd;  /* warm paper — never pure white */
+  --bg-elev:   #ede5d5;
+  --accent-soft:#ecd9c3;
+
+  --ink:       #1a1613;  /* near-black, warm */
+  --ink-soft:  #6b5f4e;
+  --ink-faint: #d8cbb4;
+
+  --rule:      #e4d8bf;
+
+  --accent:    #c2451e;  /* deeper coral — the light-theme twin. */
+
+  --positive:  #5a7347;  /* deeper olive — reads as signal on warm paper */
+  --positive-soft: #d7dec8;
+}
+
+/* ---------- Typography scale ---------- */
+:root {
+  /* Font stacks — Manrope display+body, IBM Plex Mono for technical UI only. */
+  --font-display: "Manrope", system-ui, sans-serif;
+  --font-body:    "Manrope", system-ui, sans-serif;
+  --font-mono:    "IBM Plex Mono", ui-monospace, monospace;
+
+  /* Display settings used by .display / h1 / h2. */
+  --display-weight:   600;
+  --display-tracking: -1.8px; /* letter-spacing in px — tight */
+  --display-leading:  1.03;
+
+  /* Body + meta */
+  --body-size:   17px;
+  --body-leading:1.6;
+
+  --meta-size:      11px;
+  --meta-tracking:  0.5px;   /* meta/mono is UPPERCASE, tracked */
+}
+
+/* ---------- Spacing — editorial (lead/essay/landing) ---------- */
+:root {
+  --gutter: 64px;         /* horizontal page gutter for content at 1320px max */
+  --section-pad: 96px;    /* vertical padding between major sections */
+  --stack-xs:  8px;
+  --stack-sm:  14px;
+  --stack-md:  24px;
+  --stack-lg:  40px;
+  --stack-xl:  64px;
+  --max-width: 1320px;    /* content canvas width */
+}
+
+/* ---------- Spacing — dense (dashboards, admin, monitoring) ----------
+   Activate on a dense layout via <body class="dense"> OR on a specific
+   container. Editorial rhythm is too generous for dashboards — dense
+   is a parallel scale, not a scale override.
+*/
+:root {
+  --gutter-dense:      24px;
+  --section-pad-dense: 32px;
+  --stack-dense-xs:    4px;
+  --stack-dense-sm:    8px;
+  --stack-dense-md:    14px;
+  --stack-dense-lg:    24px;
+  --max-width-dense:   none;  /* dashboards run full-viewport */
+}
+
+/* ---------- Semantic state aliases ----------
+   Severity is NOT a new palette. It is a semantic re-use of existing
+   tokens — OK = silence, CRIT = accent, WARN = accent at reduced
+   intensity. See DESIGN-SYSTEM.md §7.
+*/
+:root {
+  --state-ok:    var(--ink-soft);      /* muted — OK is the absence of signal */
+  --state-warn:  rgb(from var(--accent) r g b / 0.4);   /* half-signal */
+  --state-crit:  var(--accent);        /* full signal — single brand colour */
+  --state-positive: var(--positive);   /* directional "high = good" — §7.1a only */
+  --data-grid:   var(--rule);          /* chart gridlines */
+  --data-axis:   var(--ink-faint);     /* axis labels, tick text */
+  --data-label:  var(--ink-soft);      /* chart titles, captions */
+}
+
+/* ---------- Utility: smooth theme transitions ---------- */
+html,
+body {
+  background: var(--bg);
+  color: var(--ink);
+  transition: background 300ms ease, color 300ms ease;
+}

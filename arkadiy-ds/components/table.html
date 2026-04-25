@@ -1,0 +1,117 @@
+<!-- =============================================================
+     arkadiy-ds / components / table.html
+     Data table pattern.
+     Horizontal hairlines only. No zebra. No vertical borders.
+     Column headers: mono · 11px · uppercase · ink-soft.
+     Numeric cells: body + tabular-nums.
+     Hover: bg-elev ONLY on interactive tables (add class `interactive`).
+     Status cells: see status-pill.html.
+     Accordion rows: click row to reveal `.ads-row-detail` below.
+     ============================================================= -->
+
+<style>
+  .ads-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-family: var(--font-body);
+    color: var(--ink);
+  }
+  .ads-table thead th {
+    text-align: left;
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: 0.8px;
+    text-transform: uppercase;
+    color: var(--ink-soft);
+    font-weight: 500;
+    padding: 10px 14px;
+    border-bottom: 1px solid var(--rule);
+  }
+  .ads-table tbody td {
+    padding: 14px;
+    border-bottom: 1px solid var(--rule);
+    font-size: 15px;
+    line-height: 1.4;
+    vertical-align: top;
+  }
+  /* Numeric column — every table needs this. */
+  .ads-table .num {
+    font-variant-numeric: tabular-nums;
+    text-align: right;
+    white-space: nowrap;
+  }
+  /* Severity label cell — typographic, not coloured background. */
+  .ads-table .sev      { font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.8px; text-transform: uppercase; }
+  .ads-table .sev-ok   { color: var(--state-ok); }
+  .ads-table .sev-warn { color: var(--state-warn); }
+  .ads-table .sev-crit { color: var(--state-crit); }
+
+  /* Interactive tables (clickable rows) */
+  .ads-table.interactive tbody tr { cursor: pointer; transition: background 120ms ease; }
+  .ads-table.interactive tbody tr:hover { background: var(--bg-elev); }
+
+  /* Accordion row detail — hidden by default, revealed via [data-open]. */
+  .ads-table tbody tr.ads-row-detail { display: none; }
+  .ads-table tbody tr.ads-row-detail[data-open] { display: table-row; }
+  .ads-table tbody tr.ads-row-detail td {
+    background: var(--bg-elev);
+    padding: 18px 14px 22px;
+    font-size: 14px;
+    color: var(--ink-soft);
+  }
+</style>
+
+<table class="ads-table interactive">
+  <thead>
+    <tr>
+      <th style="width: 14%">Status</th>
+      <th>Service</th>
+      <th>Region</th>
+      <th class="num" style="width: 12%">Latency</th>
+      <th class="num" style="width: 12%">Errors</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr data-row="api-eu">
+      <td><span class="sev sev-ok">OK</span></td>
+      <td>api-gateway</td>
+      <td>eu-west-1</td>
+      <td class="num">42 ms</td>
+      <td class="num">0.01%</td>
+    </tr>
+    <tr class="ads-row-detail" data-detail-for="api-eu">
+      <td colspan="5">
+        Last deploy 14:22 UTC · p99 48 ms · 312 req/s · no alerts 7d
+      </td>
+    </tr>
+
+    <tr data-row="worker-us">
+      <td><span class="sev sev-warn">WARN</span></td>
+      <td>worker-ingest</td>
+      <td>us-east-1</td>
+      <td class="num">118 ms</td>
+      <td class="num">0.42%</td>
+    </tr>
+
+    <tr data-row="queue">
+      <td><span class="sev sev-crit">CRIT</span></td>
+      <td>queue-primary</td>
+      <td>eu-west-1</td>
+      <td class="num">—</td>
+      <td class="num">8.1%</td>
+    </tr>
+  </tbody>
+</table>
+
+<script>
+  // Accordion — click row, toggle the paired detail row.
+  document.querySelectorAll('.ads-table.interactive tbody tr[data-row]').forEach(function(tr){
+    tr.addEventListener('click', function(){
+      var id = tr.getAttribute('data-row');
+      var detail = tr.parentNode.querySelector('tr[data-detail-for="' + id + '"]');
+      if (!detail) return;
+      if (detail.hasAttribute('data-open')) detail.removeAttribute('data-open');
+      else detail.setAttribute('data-open', '');
+    });
+  });
+</script>

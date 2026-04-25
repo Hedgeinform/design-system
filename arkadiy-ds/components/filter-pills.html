@@ -1,0 +1,57 @@
+<!-- =============================================================
+     arkadiy-ds / components / filter-pills.html
+     Horizontal chip-strip for 4+ filter options (time ranges,
+     tag filters, category switches). Different from segmented-control —
+     segmented is 2-3 options visually bound in one border; filter-pills
+     are many, breathe, and can include an "other" escape (e.g. custom range).
+     ============================================================= -->
+
+<style>
+  .ads-pills {
+    display: flex; flex-wrap: wrap; gap: 8px;
+    font-family: var(--font-mono); font-size: 10px;
+    letter-spacing: 1px; text-transform: uppercase;
+  }
+  .ads-pills button {
+    background: transparent;
+    border: 1px solid var(--rule);
+    color: var(--ink-soft);
+    padding: 7px 12px;
+    cursor: pointer;
+    font-family: inherit; font-size: inherit; letter-spacing: inherit; text-transform: inherit;
+    transition: color 120ms ease, border-color 120ms ease, background 120ms ease;
+  }
+  .ads-pills button:hover { color: var(--ink); border-color: var(--ink-soft); }
+  .ads-pills button.active {
+    color: var(--bg);
+    background: var(--accent);
+    border-color: var(--accent);
+  }
+  /* Escape pill — visually distinct, indicates "enter a value" not "pick preset". */
+  .ads-pills button.escape {
+    color: var(--ink-soft);
+    border-style: dashed;
+  }
+  .ads-pills button.escape:hover { color: var(--accent); border-color: var(--accent); }
+</style>
+
+<div class="ads-pills" role="tablist">
+  <button>7d</button>
+  <button>14d</button>
+  <button class="active">30d</button>
+  <button>90d</button>
+  <button>1y</button>
+  <button>All</button>
+  <button class="escape">Custom range…</button>
+</div>
+
+<script>
+  document.querySelectorAll('.ads-pills').forEach(function(g){
+    g.querySelectorAll('button:not(.escape)').forEach(function(b){
+      b.addEventListener('click', function(){
+        g.querySelectorAll('button').forEach(function(x){ x.classList.remove('active'); });
+        b.classList.add('active');
+      });
+    });
+  });
+</script>

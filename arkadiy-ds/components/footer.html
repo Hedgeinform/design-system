@@ -1,0 +1,36 @@
+<!-- =============================================================
+     arkadiy-ds / components / footer.html
+     Four-column footer + meta strip. Replace {{PLACEHOLDERS}}.
+     ============================================================= -->
+
+<footer style="background: var(--bg); color: var(--ink-soft); padding: 64px 0 40px; border-top: 1px solid var(--rule); font-family: var(--font-body);">
+  <div class="container">
+
+    <div style="display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 48px; margin-bottom: 56px;">
+      <div>
+        <div style="font-family: var(--font-display); font-size: 22px; font-weight: var(--display-weight); color: var(--ink); letter-spacing: -0.4px; margin-bottom: 14px; max-width: 24ch; line-height: 1.2;">
+          {{FOOTER_PITCH — use <span class="accent">one</span> accent span.}}
+        </div>
+        <a class="btn-primary" href="mailto:{{EMAIL}}">Email me <span style="font-family: var(--font-mono)">→</span></a>
+      </div>
+
+      <div>
+        <div class="eyebrow" style="margin-bottom: 14px;">{{COL_1_TITLE}}</div>
+        <!-- links: each wrapped in <div style="margin-bottom:8px;"><a href=...>label</a></div> -->
+      </div>
+      <div>
+        <div class="eyebrow" style="margin-bottom: 14px;">{{COL_2_TITLE}}</div>
+      </div>
+      <div>
+        <div class="eyebrow" style="margin-bottom: 14px;">{{COL_3_TITLE}}</div>
+      </div>
+    </div>
+
+    <div style="padding-top: 24px; border-top: 1px solid var(--rule); display: flex; justify-content: space-between; align-items: baseline; font-family: var(--font-mono); font-size: 11px; color: var(--ink-soft); letter-spacing: 0.5px; text-transform: uppercase; gap: 20px; flex-wrap: wrap;">
+      <span>{{NAME}} · {{TAGLINE}}</span>
+      <span style="color: var(--ink-faint);">{{ROLE_SECONDARY}}</span>
+      <span>© {{YEAR}} · all rights reserved</span>
+    </div>
+
+  </div>
+</footer>

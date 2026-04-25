@@ -1,0 +1,33 @@
+<!-- =============================================================
+     arkadiy-ds / components / status-pill.html
+     Compact inline status marker. For use inside table cells,
+     card headers, or inline with a service name.
+     Pure typography: no filled background, no rounded box.
+     A 6px dot on the left carries the same colour as the label.
+     ============================================================= -->
+
+<style>
+  .ads-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: 0.8px;
+    text-transform: uppercase;
+    line-height: 1;
+  }
+  .ads-pill::before {
+    content: '';
+    width: 6px; height: 6px; border-radius: 50%;
+    background: currentColor;
+    flex: 0 0 6px;
+  }
+  .ads-pill-ok   { color: var(--state-ok); }
+  .ads-pill-warn { color: var(--state-warn); }
+  .ads-pill-crit { color: var(--state-crit); }
+</style>
+
+<span class="ads-pill ads-pill-ok">Operational</span>
+<span class="ads-pill ads-pill-warn">Degraded</span>
+<span class="ads-pill ads-pill-crit">Offline</span>

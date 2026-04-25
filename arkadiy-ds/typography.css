@@ -1,0 +1,147 @@
+/* =============================================================
+   arkadiy-ds / typography.css
+   Typographic classes tied to tokens.css.
+   Include AFTER tokens.css.
+   ============================================================= */
+
+/* ---------- Base ---------- */
+body {
+  font-family: var(--font-body);
+  font-size: var(--body-size);
+  line-height: var(--body-leading);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+/* ---------- Display / headings ----------
+   .display-xl — hero tagline (~64px)
+   .display-lg — section titles (~44px)
+   .display-md — sub-headings / about H2 (~28-32px)
+   .display-sm — card titles (~22px)
+*/
+.display-xl, .display-lg, .display-md, .display-sm {
+  font-family: var(--font-display);
+  font-weight: var(--display-weight);
+  line-height: var(--display-leading);
+  letter-spacing: var(--display-tracking);
+  color: var(--ink);
+  margin: 0;
+  text-wrap: balance;
+}
+.display-xl { font-size: clamp(44px, 6vw, 72px); line-height: 1.02; max-width: 22ch; }
+.display-lg { font-size: clamp(32px, 4vw, 44px); line-height: 1.08; max-width: 22ch; }
+.display-md { font-size: 28px; line-height: 1.15; letter-spacing: -0.6px; max-width: 26ch; }
+.display-sm { font-size: 22px; line-height: 1.2;  letter-spacing: -0.4px; font-weight: 600; }
+
+/* Emphasis inside a display heading — italic, lighter weight. */
+.display-xl em, .display-lg em, .display-md em, .display-sm em {
+  font-style: italic;
+  font-weight: 400;
+}
+/* Accent span — the single coloured word in a headline. */
+.display-xl .accent, .display-lg .accent,
+.display-md .accent, .display-sm .accent { color: var(--accent); }
+
+/* ---------- Body ---------- */
+.lede {
+  font-family: var(--font-body);
+  font-size: 18px; line-height: 1.5;
+  color: var(--ink-soft);
+  max-width: 52ch;
+  text-wrap: pretty;
+  margin: 0;
+}
+.body {
+  font-family: var(--font-body);
+  font-size: 17px; line-height: 1.6;
+  color: var(--ink-soft);
+  text-wrap: pretty;
+}
+
+/* ---------- Meta / eyebrow / mono ----------
+   Always mono, uppercase, tracked. This is the TECHNICAL voice.
+   Use for: section numbers, fig. labels, status strings, timestamps,
+   footer labels, "fig. I / fig. II" card tags.
+   DO NOT use mono for body copy — it's a signal, not a texture.
+*/
+.meta, .eyebrow {
+  font-family: var(--font-mono);
+  font-size: var(--meta-size);
+  letter-spacing: var(--meta-tracking);
+  text-transform: uppercase;
+  color: var(--ink-soft);
+}
+.meta .accent, .eyebrow .accent { color: var(--accent); }
+
+/* Eyebrow pattern: §NN — rule — label */
+.eyebrow-row {
+  display: flex; align-items: center; gap: 14px;
+  font-family: var(--font-mono);
+  font-size: var(--meta-size);
+  letter-spacing: 0.8px;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+}
+.eyebrow-row .num   { color: var(--accent); }
+.eyebrow-row .rule  { flex: 0 0 32px; height: 1px; background: var(--rule); }
+
+/* ---------- Links ---------- */
+a { color: inherit; }
+a.link-inline {
+  color: var(--ink);
+  text-decoration: none;
+  border-bottom: 1px solid var(--accent);
+}
+a.link-arrow {
+  color: var(--accent);
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.6px;
+  text-transform: uppercase;
+  text-decoration: none;
+  border-bottom: 1px solid var(--accent);
+  padding-bottom: 2px;
+}
+
+/* ---------- Structure ---------- */
+.container {
+  max-width: var(--max-width);
+  margin: 0 auto;
+  padding: 0 var(--gutter);
+}
+section {
+  padding: var(--section-pad) 0;
+  border-top: 1px solid var(--rule);
+  background: var(--bg);
+  color: var(--ink);
+  position: relative;
+}
+
+/* ---------- Buttons ---------- */
+.btn-primary {
+  display: inline-flex; align-items: center; gap: 10px;
+  padding: 14px 22px;
+  background: var(--ink); color: var(--bg);
+  font-family: var(--font-body); font-size: 15px; font-weight: 500;
+  letter-spacing: -0.1px;
+  text-decoration: none; cursor: pointer; border: 0;
+  transition: opacity 180ms ease;
+}
+.btn-primary:hover { opacity: 0.88; }
+.btn-secondary {
+  display: inline-flex; align-items: center; gap: 10px;
+  padding: 14px 0;
+  color: var(--ink);
+  font-family: var(--font-body); font-size: 15px; font-weight: 500;
+  text-decoration: none; cursor: pointer;
+  border-bottom: 1px solid var(--rule);
+}
+
+/* ---------- Pulse / availability dot ---------- */
+.pulse {
+  width: 10px; height: 10px; border-radius: 50%;
+  background: var(--accent);
+  box-shadow: 0 0 0 3px rgb(from var(--accent) r g b / 0.13),
+              0 0 8px rgb(from var(--accent) r g b / 0.4);
+  display: inline-block;
+}
