@@ -72,10 +72,13 @@
 
 /* ---------- Typography scale ---------- */
 :root {
-  /* Font stacks — Manrope display+body, IBM Plex Mono for technical UI only. */
-  --font-display: "Manrope", system-ui, sans-serif;
-  --font-body:    "Manrope", system-ui, sans-serif;
-  --font-mono:    "IBM Plex Mono", ui-monospace, monospace;
+  /* Font stacks — Manrope display+body, IBM Plex Mono for technical UI only.
+     The "*Fallback" entries are metric-matched synthetic fonts defined in
+     typography.css — they hold layout steady during the swap window so
+     the FOUT becomes a quiet weight/colour change, not a reflow. */
+  --font-display: "Manrope", "Manrope Fallback", system-ui, sans-serif;
+  --font-body:    "Manrope", "Manrope Fallback", system-ui, sans-serif;
+  --font-mono:    "IBM Plex Mono", "IBM Plex Mono Fallback", ui-monospace, monospace;
 
   /* Display settings used by .display / h1 / h2. */
   --display-weight:   600;
