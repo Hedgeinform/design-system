@@ -1,11 +1,18 @@
 <!-- =============================================================
      arkadiy-ds / components / bar-chart.html
-     Bar-chart reference. Three flavours:
+     Bar-chart reference. Flavours per DESIGN-SYSTEM.md §7.3a:
        1. Single-series — one metric over time, --accent fill.
        2. Severity-coloured — each bar carries its own state (norm/warn/crit).
-       3. Positive-coloured — directional "high = good" metric (§7.1a only).
-     Plus: dashed threshold line, bin-histogram.
-     See DESIGN-SYSTEM.md §7.3a for applicability rules.
+       3. Polarity-coloured — value polarity per bar (--val-pos / --val-neu / --val-neg).
+       4. Measurement without judgement — solid --accent, no per-cell colouring.
+       5. Bin histogram — distribution shape, single-colour.
+     Plus the named exception §7.1a-2 "Asymmetric action histogram"
+     and §7.1a-3 "Unipolar polarity" (see DS for conditions of applicability).
+
+     v0.5 — tick text is rendered through --data-axis = --ink-soft.
+     Tick labels are information carriers, not chrome — they must be plainly
+     readable on a data-dense surface. --ink-faint is reserved for
+     genuinely-ghost cases (see DS §2, §7.11).
      ============================================================= -->
 
 <style>
@@ -78,8 +85,10 @@
   </div>
 </div>
 
-<!-- FLAVOUR 2: Positive metric — one directional colour. §7.1a.
-     Use for "high = good" metrics where there's no negative state to distinguish. -->
+<!-- FLAVOUR 2: Polarity-coloured bars — directional "high = good" metric. §7.1a.
+     Uses --val-pos token (= legacy --positive). Each bar carries the same
+     polarity hue because the metric is unipolar-favourable. For mixed
+     polarity (gains and losses), use --val-pos / --val-neu / --val-neg per bar. -->
 <div class="ads-bar-card" style="margin-top: 14px;">
   <div class="ads-bar-head">
     <span class="title">Physical activity — minutes</span>

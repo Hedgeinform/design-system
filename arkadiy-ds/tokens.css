@@ -15,8 +15,8 @@
 
   /* text */
   --ink:       #ede5d8;  /* primary text — warm cream */
-  --ink-soft:  #968c7a;  /* muted text, eyebrows, meta */
-  --ink-faint: #322a25;  /* nearly-hidden text, disabled, ghost numerals */
+  --ink-soft:  #968c7a;  /* muted text, eyebrows, meta, axis tick labels */
+  --ink-faint: #322a25;  /* genuinely-ghost: watermarks, deprecated values, secondary axis with explicit de-emphasis. NOT for tick labels (v0.5 correction). */
 
   /* structure */
   --rule:      #241f1b;  /* 1px borders, dividers, hairlines */
@@ -24,10 +24,23 @@
   /* signal */
   --accent:    #f5936a;  /* coral-peach — THE signal color. Use sparingly. */
 
-  /* positive — directional metric "high = good". Data surfaces only.
-     See DESIGN-SYSTEM.md §7.1a for strict applicability rules. */
-  --positive:  #8fa677;  /* muted warm olive — sits beside coral without jangling */
-  --positive-soft: #2a2e22;
+  /* ---------- Data-surface value tokens ----------
+     Three semantic hues for reading values on dashboards (§7.1a).
+     Strictly data-only — NEVER on editorial surfaces, NEVER as decoration,
+     NEVER on text. Three conditions of applicability are enforced in DS.
+  */
+  --val-pos:   #8fa677;  /* muted warm olive — "high = good" / positive delta */
+  --val-neu:   #968c7a;  /* = --ink-soft — neutral / unchanged / no-news */
+  --val-neg:   #c2614a;  /* desaturated coral-brick — "high = bad" / negative delta */
+  --val-warn:  rgb(from var(--accent) r g b / 0.4);  /* coral 40% — 4th flavour, advisory */
+
+  /* tinted companion surfaces for value tokens (callout backgrounds in data context) */
+  --val-pos-soft: #2a2e22;
+  --val-neg-soft: #2e1d18;
+
+  /* ---------- Legacy aliases (kept for v0.3 consumers) ---------- */
+  --positive:      var(--val-pos);
+  --positive-soft: var(--val-pos-soft);
 }
 
 /* ---------- LIGHT — "warm paper" ---------- */
@@ -38,14 +51,23 @@
 
   --ink:       #1a1613;  /* near-black, warm */
   --ink-soft:  #6b5f4e;
-  --ink-faint: #d8cbb4;
+  --ink-faint: #d8cbb4;  /* genuinely-ghost only — see dark counterpart (v0.5). */
 
   --rule:      #e4d8bf;
 
   --accent:    #c2451e;  /* deeper coral — the light-theme twin. */
 
-  --positive:  #5a7347;  /* deeper olive — reads as signal on warm paper */
-  --positive-soft: #d7dec8;
+  /* Data-surface value tokens — light variants (§7.1a). */
+  --val-pos:   #5a7347;  /* deeper olive — reads as signal on warm paper */
+  --val-neu:   #6b5f4e;  /* = --ink-soft */
+  --val-neg:   #a83a18;  /* deeper brick — paired with light coral, not orange */
+  --val-warn:  rgb(from var(--accent) r g b / 0.4);
+
+  --val-pos-soft: #d7dec8;
+  --val-neg-soft: #ecd0c4;
+
+  --positive:      var(--val-pos);
+  --positive-soft: var(--val-pos-soft);
 }
 
 /* ---------- Typography scale ---------- */
@@ -102,11 +124,11 @@
 */
 :root {
   --state-ok:    var(--ink-soft);      /* muted — OK is the absence of signal */
-  --state-warn:  rgb(from var(--accent) r g b / 0.4);   /* half-signal */
+  --state-warn:  var(--val-warn);      /* half-signal (= coral 40%) */
   --state-crit:  var(--accent);        /* full signal — single brand colour */
-  --state-positive: var(--positive);   /* directional "high = good" — §7.1a only */
+  --state-positive: var(--val-pos);    /* legacy alias — directional "high = good" */
   --data-grid:   var(--rule);          /* chart gridlines */
-  --data-axis:   var(--ink-faint);     /* axis labels, tick text */
+  --data-axis:   var(--ink-soft);      /* axis tick labels — must be readable on data-dense surface (v0.5 correction). NOT --ink-faint. */
   --data-label:  var(--ink-soft);      /* chart titles, captions */
 }
 
