@@ -76,14 +76,22 @@
      The "*Fallback" entries are metric-matched synthetic fonts defined in
      typography.css — they hold layout steady during the swap window so
      the FOUT becomes a quiet weight/colour change, not a reflow. */
-  --font-display: "Manrope", "Manrope Fallback", system-ui, sans-serif;
+  --font-display: "Vollkorn", "Vollkorn Fallback", Georgia, serif;
   --font-body:    "Manrope", "Manrope Fallback", system-ui, sans-serif;
   --font-mono:    "IBM Plex Mono", "IBM Plex Mono Fallback", ui-monospace, monospace;
+  /* v0.8 — display switched from Manrope to Vollkorn (warm book serif).
+     Body stays sans, mono stays mono. The system now has TWO voices on
+     editorial surfaces (serif headlines + italic ornament, sans body)
+     and ONE voice on data surfaces (sans + mono). See §6 in DESIGN-SYSTEM.md
+     for italic-emphasis rule and §7 for the Vollkorn-on-data prohibition. */
 
-  /* Display settings used by .display / h1 / h2. */
+  /* Display settings used by .display / h1 / h2.
+     v0.8 — Vollkorn is optically larger than Manrope at the same px,
+     so tracking relaxed from -1.8px to -0.6px (serif needs less negative
+     tracking) and weight stays at 600. */
   --display-weight:   600;
-  --display-tracking: -1.8px; /* letter-spacing in px — tight */
-  --display-leading:  1.03;
+  --display-tracking: -0.6px; /* letter-spacing — gentle, suits a serif */
+  --display-leading:  1.08;
 
   /* Body + meta */
   --body-size:   17px;
@@ -103,19 +111,6 @@
   --stack-lg:  40px;
   --stack-xl:  64px;
   --max-width: 1320px;    /* content canvas width */
-
-  /* Mobile parallel scale (v0.7). Same convention as --gutter-dense:
-     a parallel set of tokens, not an override. Activated via media query
-     below. The editorial scale stays canonical for desktop-and-print. */
-  --gutter-mobile:      20px;
-  --section-pad-mobile: 56px;
-  --max-width-mobile:   100%;
-
-  /* Narrow-viewport breakpoint. NOT 768 — the topbar empirically loses
-     the 1fr auto 1fr fit at ~640px (Russian uppercase tagline + Euler +
-     nav + toggle in a single row). Single source of truth for any
-     consumer that needs to mirror the breakpoint in JS or in its own CSS. */
-  --bp-narrow: 640px;
 }
 
 /* ---------- Spacing — dense (dashboards, admin, monitoring) ----------
@@ -131,30 +126,6 @@
   --stack-dense-md:    14px;
   --stack-dense-lg:    24px;
   --max-width-dense:   none;  /* dashboards run full-viewport */
-}
-
-/* ---------- Mobile reflow (v0.7) ----------
-   Below --bp-narrow, the editorial scale relaxes one notch: gutter
-   collapses from 64 → 20, section-pad from 96 → 56, max-width drops
-   the 1320px cap. Stack tokens shrink one step (xl: 64→48, lg: 40→32);
-   smaller stacks (md/sm/xs) are unchanged because they already read
-   correctly at narrow widths.
-
-   This is NOT a switch to dense. Dashboards remain `<body class="dense">`
-   regardless of viewport, and dense tokens are independent of these.
-   Editorial-on-mobile and dense-on-desktop are two different scales for
-   two different jobs.
-*/
-@media (max-width: 640px) {
-  :root {
-    --gutter:      var(--gutter-mobile);
-    --section-pad: var(--section-pad-mobile);
-    --max-width:   var(--max-width-mobile);
-
-    --stack-xl: 48px;   /* was 64 */
-    --stack-lg: 32px;   /* was 40 */
-    /* --stack-md, --stack-sm, --stack-xs unchanged */
-  }
 }
 
 /* ---------- Semantic state aliases ----------

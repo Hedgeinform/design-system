@@ -1,11 +1,25 @@
 <!-- =============================================================
      arkadiy-ds / components / topbar.html
+     v0.7 — mobile-pass.
+
      Sticky top chrome. Carries up to two identity marks per §8:
        • Center — Euler wordmark (brand of the practice)
        • Left   — Personal monogram (signature of the operator)
      Default state: both present. Any combination is permitted at
      project discretion — omit either, or both. To omit a mark, delete
      its element below; the layout re-flows naturally.
+
+     v0.7 — mobile reflow (§8.2a, §8.3, §10).
+     Below `--bp-narrow` (640px) the topbar reflows from a single
+     active row into a two-row "epigraph" layout:
+       • Row 1 (epigraph, hairline-thin) — meta-anchor (left slot)
+         and the Euler wordmark (right slot, small).
+       • Row 2 (active) — monogram + project name (left), nav and
+         theme toggle (right).
+     If the meta-anchor slot {{META_ANCHOR}} is left empty, the
+     epigraph row is suppressed and Euler returns to the active row
+     (compact behaviour) — see §8.3.
+
      Replace all {{PLACEHOLDER}} tokens with your project's strings.
      Requires tokens.css + typography.css (or equivalent vars).
      ============================================================= -->
@@ -19,6 +33,8 @@
     color: var(--ink-soft);
     transition: background 300ms ease, border-color 300ms ease, color 300ms ease;
   }
+
+  /* ---------- Active row (desktop default; mobile row 2) ---------- */
   .ads-topbar-inner {
     max-width: var(--max-width);
     margin: 0 auto;
@@ -30,9 +46,12 @@
   }
   .ads-topbar-left  {
     display: flex; align-items: center; gap: 14px;
-    text-align: left;
+    text-align: left; min-width: 0;
   }
   .ads-topbar-left .sep { color: var(--ink-faint); }
+  .ads-topbar-left .ads-topbar-tagline {
+    overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+  }
   .ads-topbar-right { display: flex; justify-content: flex-end; align-items: center; gap: 18px; }
   .ads-topbar-right a { color: var(--ink); text-decoration: none; }
 
@@ -41,16 +60,18 @@
     display: inline-flex; align-items: center;
     color: var(--accent);
     transition: color 300ms ease;
+    flex: 0 0 auto;
   }
   .ads-topbar-monogram svg { display: block; }
 
-  /* The Euler watermark — always centered, always present. This is the brand. */
+  /* The Euler watermark — §8.2. Centered and large on desktop;
+     migrates to the epigraph right slot on mobile (§8.2a). */
   .ads-topbar-euler {
     font-family: var(--font-display);
     font-style: italic; font-size: 17px; letter-spacing: 0.3px;
     text-transform: none; line-height: 1; white-space: nowrap;
     text-decoration: none; color: var(--accent);
-    transition: color 300ms ease;
+    transition: color 300ms ease, font-size 200ms ease;
   }
   .ads-topbar-euler sup { font-style: italic; font-size: 0.7em; }
 
@@ -69,9 +90,81 @@
     width: 8px; height: 8px; border-radius: 50%;
     background: var(--accent);
   }
+  .ads-theme-toggle .label { /* hidden on narrow — see media query */ }
+
+  /* ---------- Epigraph row (mobile only — §8.2a) ---------- */
+  .ads-topbar-epigraph {
+    display: none; /* hidden on desktop; revealed by media query */
+    padding: 5px var(--gutter) 4px;
+    border-bottom: 1px solid var(--rule);
+    justify-content: space-between; align-items: baseline;
+    font-family: var(--font-mono); font-size: 9.5px;
+    letter-spacing: 1px; text-transform: uppercase;
+    color: var(--ink-faint);
+  }
+  .ads-topbar-epigraph .meta-anchor { color: var(--ink-faint); }
+  .ads-topbar-epigraph .ads-topbar-euler {
+    font-size: 11px; letter-spacing: 0;
+  }
+
+  /* ---------- Mobile reflow ----------
+     Threshold: --bp-narrow (640px by default; tokens.css §spacing).
+     Behaviour:
+       1. Active row collapses to space-between (2 columns) — Euler
+          leaves the active row.
+       2. Epigraph row appears above active row, carrying meta-anchor
+          (left) + Euler (right, small).
+       3. If meta-anchor is empty (no {{META_ANCHOR}} content), the
+          epigraph row is suppressed via :has() and Euler is restored
+          to the active row's centre slot (compact fallback, §8.3).
+       4. Theme toggle drops its label, keeps the dot as an icon-button.
+       5. Tagline truncates to ellipsis (already capped to 1 line).
+  */
+  @media (max-width: 640px) {
+    .ads-topbar-inner {
+      padding: 10px var(--gutter);
+      grid-template-columns: 1fr auto;
+    }
+    /* Hide the central Euler in the active row by default;
+       it lives in the epigraph instead. */
+    .ads-topbar-inner > .ads-topbar-euler { display: none; }
+
+    .ads-topbar-epigraph { display: flex; }
+
+    /* Compact fallback (§8.3): if epigraph carries no meta-anchor
+       content, the row hides itself and Euler returns to the active row. */
+    .ads-topbar:not(:has(.ads-topbar-epigraph .meta-anchor:not(:empty))) .ads-topbar-epigraph {
+      display: none;
+    }
+    .ads-topbar:not(:has(.ads-topbar-epigraph .meta-anchor:not(:empty))) .ads-topbar-inner {
+      grid-template-columns: auto 1fr auto;
+    }
+    .ads-topbar:not(:has(.ads-topbar-epigraph .meta-anchor:not(:empty))) .ads-topbar-inner > .ads-topbar-euler {
+      display: inline; justify-self: center; font-size: 15px;
+    }
+
+    /* Tagline behaviour — clamped to 1 line, truncates. */
+    .ads-topbar-left .ads-topbar-tagline {
+      max-width: 22ch;
+    }
+
+    /* Theme toggle becomes icon-only. */
+    .ads-theme-toggle .label { display: none; }
+    .ads-theme-toggle { padding: 5px; }
+  }
 </style>
 
 <div class="ads-topbar">
+
+  <!-- Epigraph row — mobile only, §8.2a. Suppressed when {{META_ANCHOR}} is empty. -->
+  <div class="ads-topbar-epigraph">
+    <span class="meta-anchor">{{META_ANCHOR}}</span>
+    <a href="#euler" class="ads-topbar-euler" title="Euler's identity — the standard this practice is held to.">
+      e<sup>i&pi;</sup> + 1 = 0
+    </a>
+  </div>
+
+  <!-- Active row — both desktop and mobile. -->
   <div class="ads-topbar-inner">
     <span class="ads-topbar-left">
       <!-- Personal monogram (§8.1). Omit this <span> for an Euler-only topbar. -->
@@ -84,20 +177,21 @@
         </svg>
       </span>
       <span class="sep">·</span>
-      <span>{{NAME}} · {{TAGLINE}}</span>
+      <span class="ads-topbar-tagline">{{NAME}} · {{TAGLINE}}</span>
     </span>
 
     <!-- Euler's identity — e^(iπ) + 1 = 0 — the wordmark (§8.2).
-         Omit this <a> for a monogram-only topbar; the centre column collapses. -->
+         Omit this <a> for a monogram-only topbar; the centre column collapses.
+         On mobile, this element is hidden in favour of the epigraph copy above
+         (§8.2a) — UNLESS the epigraph is suppressed by §8.3 fallback, in which
+         case it reappears in the centre slot at compact size. -->
     <a href="#euler" class="ads-topbar-euler"
        title="Euler's identity — the standard this practice is held to.">
       e<sup>i&pi;</sup> + 1 = 0
     </a>
 
     <span class="ads-topbar-right">
-      <a href="#writing">{{NAV_1}}</a>
-      <a href="#work">{{NAV_2}}</a>
-      <a href="#contact">{{NAV_3}}</a>
+      <a href="#archive" aria-label="{{NAV_LABEL}}">{{NAV_LABEL}}</a>
       <button class="ads-theme-toggle" id="theme-toggle" aria-label="Toggle theme">
         <span class="dot"></span>
         <span class="label">Dark</span>

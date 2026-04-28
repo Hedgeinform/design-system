@@ -5,8 +5,11 @@
    ============================================================= */
 
 /* ---------- Self-hosted fonts ----------
-   Manrope (body, display) — 400 / 500 / 600 / 700, latin + cyrillic.
+   Manrope (body) — 400 / 500 / 600 / 700, latin + cyrillic.
    IBM Plex Mono (technical voice) — 400 / 500, latin + cyrillic.
+   Vollkorn (display) — 400 / 500 / 600 + italic 400 / 500, latin + cyrillic.
+   Sourced from @fontsource/vollkorn@5.0.18 (= Google Fonts master, Friedrich
+   Althausen, OFL). Same prebuilt subsets Google CDN serves — drop-in.
 
    font-display: swap — text appears immediately in the metric-matched
    fallback below, then re-renders in Manrope/Plex when the woff2 lands.
@@ -116,6 +119,103 @@
   unicode-range: U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116;
 }
 
+/* ---------- Vollkorn (display, v0.8) ----------
+   Five faces × two unicode ranges = ten files. Subsets match what the
+   Google Fonts CDN ships (= same .woff2 binaries — vendored via
+   @fontsource/vollkorn@5.0.18, OFL). Adding a sixth weight or italic
+   600 means dropping the file in fonts/ and adding the @font-face pair
+   here; do not change subsetting on a whim. */
+
+/* Vollkorn — 400 normal */
+@font-face {
+  font-family: 'Vollkorn';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url('fonts/Vollkorn-latin-400.woff2') format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+@font-face {
+  font-family: 'Vollkorn';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url('fonts/Vollkorn-cyrillic-400.woff2') format('woff2');
+  unicode-range: U+0301, U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116;
+}
+
+/* Vollkorn — 400 italic */
+@font-face {
+  font-family: 'Vollkorn';
+  font-style: italic;
+  font-weight: 400;
+  font-display: swap;
+  src: url('fonts/Vollkorn-latin-400-italic.woff2') format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+@font-face {
+  font-family: 'Vollkorn';
+  font-style: italic;
+  font-weight: 400;
+  font-display: swap;
+  src: url('fonts/Vollkorn-cyrillic-400-italic.woff2') format('woff2');
+  unicode-range: U+0301, U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116;
+}
+
+/* Vollkorn — 500 normal */
+@font-face {
+  font-family: 'Vollkorn';
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+  src: url('fonts/Vollkorn-latin-500.woff2') format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+@font-face {
+  font-family: 'Vollkorn';
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+  src: url('fonts/Vollkorn-cyrillic-500.woff2') format('woff2');
+  unicode-range: U+0301, U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116;
+}
+
+/* Vollkorn — 500 italic */
+@font-face {
+  font-family: 'Vollkorn';
+  font-style: italic;
+  font-weight: 500;
+  font-display: swap;
+  src: url('fonts/Vollkorn-latin-500-italic.woff2') format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+@font-face {
+  font-family: 'Vollkorn';
+  font-style: italic;
+  font-weight: 500;
+  font-display: swap;
+  src: url('fonts/Vollkorn-cyrillic-500-italic.woff2') format('woff2');
+  unicode-range: U+0301, U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116;
+}
+
+/* Vollkorn — 600 normal (display weight) */
+@font-face {
+  font-family: 'Vollkorn';
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  src: url('fonts/Vollkorn-latin-600.woff2') format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+@font-face {
+  font-family: 'Vollkorn';
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  src: url('fonts/Vollkorn-cyrillic-600.woff2') format('woff2');
+  unicode-range: U+0301, U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116;
+}
+
 /* ---------- Metric-matched fallbacks ----------
    While Manrope / Plex are loading (the swap window), text is rendered
    in the system font. The naive system fallback would reflow when the
@@ -134,6 +234,16 @@
   descent-override: 27%;
   line-gap-override: 0%;
   size-adjust: 100%;
+}
+/* Vollkorn fallback — matches Vollkorn's wide x-height & gentle contrast
+   with system Georgia. Holds layout while the woff2 lands. */
+@font-face {
+  font-family: 'Vollkorn Fallback';
+  src: local('Georgia'), local('Times New Roman'), local('serif');
+  ascent-override: 100%;
+  descent-override: 26%;
+  line-gap-override: 0%;
+  size-adjust: 102%;
 }
 @font-face {
   font-family: 'IBM Plex Mono Fallback';
@@ -173,11 +283,40 @@ body {
 .display-md { font-size: 28px; line-height: 1.15; letter-spacing: -0.6px; max-width: 26ch; }
 .display-sm { font-size: 22px; line-height: 1.2;  letter-spacing: -0.4px; font-weight: 600; }
 
-/* Emphasis inside a display heading — italic, lighter weight. */
+/* Emphasis inside a display heading — italic, lighter weight.
+   v0.8 — italic is now in Vollkorn, which has a genuinely calligraphic
+   italic (not a sloped roman). Use it MORE often than feels right —
+   pullquotes, ledes, marginalia/glosses, and folio captions all read
+   better in italic Vollkorn than in italic Manrope did. */
 .display-xl em, .display-lg em, .display-md em, .display-sm em {
   font-style: italic;
-  font-weight: 400;
+  font-weight: 500;
 }
+
+/* ---------- v0.8: Marginalia / gloss ----------
+   The italic-on-the-margin pattern that grounded the §8.7 chrome-dissolves
+   direction. A short Vollkorn-italic note set in the left or right gutter,
+   keyed by --accent for its folio (date or fig. number). Use sparingly:
+   marginalia is only legitimate when there is something to gloss. Don't
+   pad with decorative italics — that is the failure mode this pattern
+   most often slides into.
+*/
+.gloss {
+  font-family: var(--font-display);
+  font-style: italic;
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 1.55;
+  color: var(--ink-soft);
+}
+.gloss em { color: var(--ink); font-style: italic; }
+.gloss .folio {
+  display: block;
+  color: var(--accent);
+  font-style: italic;
+  margin-bottom: 14px;
+}
+.gloss > * + * { margin-top: 12px; }
 /* Accent span — the single coloured word in a headline. */
 .display-xl .accent, .display-lg .accent,
 .display-md .accent, .display-sm .accent { color: var(--accent); }
@@ -196,6 +335,43 @@ body {
   font-size: 17px; line-height: 1.6;
   color: var(--ink-soft);
   text-wrap: pretty;
+}
+
+/* v0.8 — long-form essay body in Vollkorn (NOT Manrope).
+   Use on dedicated essay/notes pages, NOT on landing or Rybov.
+   Strict rules: max-width 36ch–66ch, line-height 1.65, italic for
+   emphasis, pullquotes left-keyed by --accent. */
+.essay-body {
+  font-family: var(--font-display);
+  font-weight: 400;
+  font-size: 18px;
+  line-height: 1.65;
+  color: var(--ink-soft);
+  max-width: 64ch;
+  text-wrap: pretty;
+}
+.essay-body em { font-style: italic; color: var(--ink); }
+.essay-body .pullquote {
+  font-family: var(--font-display);
+  font-style: italic;
+  font-weight: 500;
+  font-size: 22px;
+  line-height: 1.4;
+  color: var(--ink);
+  margin: 32px 0;
+  padding-left: 24px;
+  border-left: 2px solid var(--accent);
+  max-width: 36ch;
+}
+.essay-body .lede-italic {
+  font-family: var(--font-display);
+  font-style: italic;
+  font-weight: 400;
+  font-size: 22px;
+  line-height: 1.4;
+  color: var(--ink-soft);
+  max-width: 36ch;
+  margin: 0 0 40px;
 }
 
 /* ---------- Meta / eyebrow / mono ----------

@@ -1,0 +1,52 @@
+/* =============================================================
+   arkadiy-ds / tokens.css — v0.7 patch
+   Add the following to the existing tokens.css under the indicated
+   sections. NOT a replacement file — these are additions/diffs only.
+   ============================================================= */
+
+
+/* === ADD to "Spacing — editorial" section ============================ */
+
+:root {
+  /* ... existing editorial tokens unchanged ... */
+
+  /* Mobile parallel scale (v0.7). Same convention as --gutter-dense:
+     a parallel set of tokens, not an override. Activated via media query
+     below. The editorial scale stays canonical for desktop-and-print. */
+  --gutter-mobile:      20px;
+  --section-pad-mobile: 56px;
+  --max-width-mobile:   100%;
+
+  /* Narrow-viewport breakpoint. NOT 768 — the topbar empirically loses
+     the 1fr auto 1fr fit at ~640px (Russian uppercase tagline + Euler +
+     nav + toggle in a single row). Single source of truth for any
+     consumer that needs to mirror the breakpoint in JS or in its own CSS. */
+  --bp-narrow: 640px;
+}
+
+
+/* === ADD as a new top-level block, after the dense-mode declaration === */
+
+/* ---------- Mobile reflow (v0.7) ----------
+   Below --bp-narrow, the editorial scale relaxes one notch: gutter
+   collapses from 64 → 20, section-pad from 96 → 56, max-width drops
+   the 1320px cap. Stack tokens shrink one step (xl: 64→48, lg: 40→32);
+   smaller stacks (md/sm/xs) are unchanged because they already read
+   correctly at narrow widths.
+
+   This is NOT a switch to dense. Dashboards remain `<body class="dense">`
+   regardless of viewport, and dense tokens are independent of these.
+   Editorial-on-mobile and dense-on-desktop are two different scales for
+   two different jobs.
+*/
+@media (max-width: 640px) {
+  :root {
+    --gutter:      var(--gutter-mobile);
+    --section-pad: var(--section-pad-mobile);
+    --max-width:   var(--max-width-mobile);
+
+    --stack-xl: 48px;   /* was 64 */
+    --stack-lg: 32px;   /* was 40 */
+    /* --stack-md, --stack-sm, --stack-xs unchanged */
+  }
+}

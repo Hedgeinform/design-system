@@ -1,16 +1,18 @@
 # Arkadiy Schennikov — Design System
 
-**Version:** 0.7 · 2026-04-26
+**Version:** 0.8 · 2026-04-28
 **Maintainer:** Arkadiy (author) · Claude (co-author on this build)
 
 > **Changelog**
-> - **0.7** — Mobile-pass for editorial surfaces. Three additions, one extension.
->   - **§8.2a — Euler reflow on narrow viewports (new).** Below `--bp-narrow` (640px), the Euler wordmark migrates from the active-row centre slot to the right slot of an epigraph row at reduced size. The wordmark stays continuously present, but its role shifts — on desktop it is the central marque of the chrome; on mobile it is the running head of the page. Both readings preserve the §8.2 principle ("the standard this practice is held to"); only the typographic register changes.
->   - **§8.3 — Editorial eyebrow slot, meta-anchor (new).** The mobile epigraph row has a left slot reserved for the page's meta-anchor (`fig.`, `note`, `§NN`, issue number, date). If the consuming surface has no such anchor, the epigraph row is suppressed entirely and Euler falls back to a compact-mode centre placement in the active row. Editorial surfaces that publish — lead pages, essays, archive cards, dated artefacts — should populate this slot. Surfaces that operate (dashboards, forms) do not use this topbar component at all; they belong to dense mode (§7.10) and a separate chrome compoent — out of scope for v0.7, scheduled for v0.8.
->   - **§10 — Responsive scale (new).** Documents the mobile parallel scale (`--gutter-mobile`, `--section-pad-mobile`, `--max-width-mobile`, `--bp-narrow`) added to `tokens.css`, and the rule that this is a *third scale* alongside editorial (default) and dense — not an override of either. The breakpoint token is the single source of truth; consumers that mirror it in JS or in component-local CSS read `var(--bp-narrow)`.
->   - **components/topbar.html** rewritten to implement §8.2a + §8.3. New `{{META_ANCHOR}}` placeholder; `{{NAV_1}}` / `{{NAV_2}}` / `{{NAV_3}}` reduced to a single `{{NAV_LABEL}}` slot — multi-link nav on the topbar is not in scope for editorial surfaces (they have a footer for that).
->   - **components/footer.html** — flex-wrap behaviour confirmed; no markup change required for v0.7. Existing `gap: 20px; flex-wrap: wrap` on the meta-strip already reflows correctly under the new gutter.
->   - **No changes** to: typography scale, colour tokens, all data-surface rules (§7.x), §8.1 monogram, §8.2 Euler style.
+> - **0.8** — Voice & chrome reform pass. Triggered by realising that the v0.6 surface had drifted into the generic "editorial-with-Claude" dialect (mono-uppercase eyebrows everywhere, italic-serif emphasis on a sans headline, hairline-caged sections, academic numbering as decoration). Six-clause diagnosis recorded in `Без почерка.html`. Four changes:
+>   - **§6 — Display face is now Vollkorn.** `--font-display` switches from Manrope to Vollkorn 600 (warm German book serif, ca. 2005, sturdy slab-ish low-contrast). Body stays Manrope; mono stays Plex. Tracking relaxed from -1.8px to -0.6px (serif needs less negative tracking). **Self-hosted from day one** — `arkadiy-ds/fonts/` now ships ten Vollkorn woff2 files (400/500/600 normal + 400/500 italic, latin + cyrillic — vendored from `@fontsource/vollkorn@5.0.18`, OFL, identical binaries to the Google CDN subsets). `Vollkorn Fallback` (Georgia-based, metric-matched) keeps the swap quiet. Italic Vollkorn is genuinely calligraphic (not sloped roman) and is now the **dominant emphasis mechanism**: pullquotes, ledes, marginalia, folio captions all preferentially set in italic Vollkorn. New utility classes `.gloss`, `.essay-body`, `.essay-body .pullquote`, `.essay-body .lede-italic` formalise the patterns.
+>   - **§7 (data) — Vollkorn is FORBIDDEN on data surfaces.** KPI numbers, table cells, axis tick values, chart labels, status pills must remain on Manrope or Plex Mono. Reasoning: serif numbers read as **literary, rounded, opinionated** — they violate the "data is fact" voice. Section §7 H2 titles MAY use Vollkorn (`фонды и активы по компаниям`) and §7-folio italics MAY use Vollkorn italic (`fig. 2026·116 — состояние портфелей`); these are *speech about the data*, not data. New antipattern **§5-D8** added.
+>   - **§8 — Topbar reformed (B + α + γ).** Three coordinated changes:
+>     - **(B) The page anchor leaves the chrome.** `fig. NN`, date, and meta-anchor no longer sit in a topbar eyebrow row — they live in the page body as a folio (typically a `.gloss` block in the gutter, or a single italic line under the H1). Topbar is reduced to **monogram · Euler · 1–2 nav links · theme toggle**.
+>     - **(α) Italic Vollkorn replaces mono-uppercase as the editorial eyebrow voice.** Mono-uppercase remains legitimate **only on data surfaces and section labels inside dense layouts**. On editorial surfaces, eyebrows and meta switch to italic Vollkorn at the body kegl, not tracked uppercase at 11px.
+>     - **(γ) No 1px hairline as section delimiter.** `border-top: 1px solid var(--rule)` is no longer the default `<section>` boundary. Sections separate by **whitespace, italic gloss-row, or folio number** — not by a rule. Hairlines remain in tables, cards, and form fields where they earn their place.
+>   - **§10 (new) — Sanctioned alternatives.** Three-layer model of DS jurisdiction (tokens & forbidden = strict / recommended default = soft / **sanctioned alternatives = opt-in with explicit conditions of applicability**) made explicit. First entry: **§10.1 Vertical spine topbar** — opt-in mobile chrome where the topbar is a 28px-wide vertical band on the left edge with the monogram top, Euler vertically, theme toggle bottom. Permitted on editorial/artistic mobile surfaces only; forbidden on Rybov and any data-bearing mobile screen.
+> - **0.7** — Conceptual realisation pass (no code shipped, recorded for archive). Surveyed five candidate display faces (Manrope, IBM Plex Mono, Bodoni Moda, Old Standard TT, Vollkorn, EB Garamond, Spectral, Cormorant Garamond) against four criteria: distinctive-from-Times, screen-readable, has Cyrillic, supports an "unhurried-literate" voice. Vollkorn 600 selected. Decision recorded in `Vollkorn в системе.html` (dark) and `Vollkorn — светлая.html` (light). v0.8 is the implementation of this decision.
 > - **0.6** — Structural maturation pass. Three additions and one renumbering.
 >   - **§1 — three voices.** Philosophy now names the three kinds of visual content that legitimately co-exist on a Schennikov surface: *brand signal* (decoration that looks like data), *data* (charts that are data), *hosted artefacts* (content authored elsewhere — generated images, embedded videos, quoted external surfaces). The DS regulates each voice differently; this is the frame for §3a and §7.1a *Containment*.
 >   - **§3a — Hosted artefacts (new).** Names and bounds the case "a Schennikov surface hosts content whose visual language is foreign to the system." DS owns the wrapper (frame, caption, surface, adjacent typography); the artefact owns its interior. Required and forbidden behaviours enumerated. This legalises art-driven projects (generated imagery), client work whose imagery is dictated by external brand, and editorial figures quoting external dashboards or videos.
@@ -60,7 +62,9 @@ This is the design language for Arkadiy's independent practice and all artefacts
 
 **The wordmark is Euler's identity:** `eⁱπ + 1 = 0`. It is the bar the work is held to — five fundamental constants, one equation, zero remainder. Do not decorate it, do not replace it with "a more recognizable logo," do not move it to the footer. (For topbar slot rules — where Euler sits, when it can be omitted, and how the personal monogram coexists — see §8.)
 
-**Technical voice comes from typography, not iconography.** The coded feeling of the brand is carried by IBM Plex Mono in UI labels (`§01`, `FIG. II`, `20 MS/DIV`) and by small SVG plots (FFT spectra, Lissajous curves, phase portraits) as decoration — never as data. Body text is always Manrope, never mono.
+**Technical voice comes from typography, not iconography.** The coded feeling of the brand is carried by IBM Plex Mono in UI labels (`§01`, `FIG. II`, `20 MS/DIV`) and by small SVG plots (FFT spectra, Lissajous curves, phase portraits) as decoration — never as data.
+
+**Three faces, three jobs (v0.8).** Vollkorn is the editorial voice (display, headlines, italic emphasis, marginalia, long-form essay body). Manrope is the working voice (lede, UI body, dashboard text). IBM Plex Mono is the technical voice (eyebrows on data surfaces, KPI numbers, table cells, axis values, status pills). Body copy on essay pages is set in Vollkorn 18px; body copy everywhere else (landing, dashboards, admin) stays Manrope. Mono is **never** body. See `typography.css` for class definitions and `tokens.css` for the `--font-display` / `--font-body` / `--font-mono` stacks.
 
 **Three voices of visual content.** A Schennikov surface legitimately carries up to three distinct kinds of content, regulated differently:
 
@@ -198,7 +202,11 @@ Reference implementations (full context, not portable — read as examples):
 
 ## 5 · Antipatterns — things NOT to do
 
-- ❌ Inter, Roboto, or system sans as display type. The face is Manrope, always.
+- ❌ Inter, Roboto, or system sans as display type. The display face is **Vollkorn** (v0.8 — was Manrope in v0.6).
+- ❌ **Vollkorn on data — KPI numbers, table cells, axis tick values, chart labels, status pills.** Serif numerals read as opinionated and rounded; data must remain on Manrope or Plex Mono. Section H2 titles and italic folio captions on data surfaces MAY be Vollkorn — they are speech *about* data, not data itself. (See §7 head note.)
+- ❌ The mono-uppercase tracked eyebrow on editorial surfaces (landing, essay, hero). v0.8 retired this in favour of italic Vollkorn. Mono-uppercase eyebrows remain legitimate **only on data surfaces and inside dense layouts**.
+- ❌ Hairline (`1px solid var(--rule)`) as default `<section>` boundary on editorial surfaces. v0.8: sections separate by whitespace, italic gloss-row, or folio number. Hairlines stay legitimate inside tables, cards, and form fields.
+- ❌ Putting `fig. NN` / dates / meta-anchors **in the topbar**. v0.8 (§8 reform): folio info lives in the page body, not in chrome.
 - ❌ A second accent colour ("let's add a blue for links").
 - ❌ Gradients of any kind (linear, radial, mesh).
 - ❌ Rounded cards with left-border accent (the "AI SaaS landing" trope).
@@ -219,6 +227,8 @@ Bump the version at the top of this file when tokens change. Token changes propa
 ## 7 · Data patterns (dashboards, tables, charts)
 
 The brand is editorial by default but must also serve dashboards, monitoring, and admin tools. The rule of data surfaces is the same as the rest of the system: **one accent colour, typography carries the signal.**
+
+> **§7-D8 · Type voice on data surfaces (v0.8 prohibition).** `--font-display` (Vollkorn) is **forbidden** on the values themselves: KPI numbers, table cells, axis tick labels, chart legends, status pills, sparkline marks. Numbers in serif read as literary, rounded, and opinionated — exactly the wrong voice for "this is a fact." Data values use Plex Mono (numerals, axes, eyebrows) or Manrope (table text labels, chart titles) only. **Vollkorn is permitted on data surfaces only as speech *about* the data**: the section H2 above a chart, the italic folio caption beneath it (`*fig. 2026·116* — состояние портфелей`), or a paragraph of editorial commentary inside a report card. The italic-folio pattern is the load-bearing one: it lets a dashboard speak the same editorial voice as the rest of the system without staining the values themselves.
 
 ### 7.1 Severity
 
@@ -471,109 +481,46 @@ Reference: `components/monogram.html` (drop-in snippet at the topbar default siz
 
 Reference: `components/topbar.html`.
 
-### 8.2a Euler — reflow on narrow viewports
-
-Below `--bp-narrow` (640px), the Euler wordmark migrates out of the active
-row's centre slot into the **right slot of an epigraph row** that sits
-above the active row. Two things change:
-
-- **Position** — centre of the active row → right of an epigraph row.
-- **Size** — 17px → 11px (in mono-cased context, sits next to the meta-anchor).
-
-What does **not** change:
-
-- It is still present. The wordmark is never hidden on a Schennikov surface.
-- It is still `--accent`, still Manrope italic, still rendered as
-  `eⁱπ + 1 = 0` with `iπ` superscripted.
-- It is still the wordmark of the practice in the §8.2 sense — the size
-  reduction is a register change (running head ↔ display), not a status
-  change.
-
-**Why right rather than centre.** A two-row narrow topbar with Euler at
-the centre of the epigraph row collides visually with the centre of the
-active row below it — the eye reads two centred elements as a stacked
-title, which Euler is not. Right-aligning Euler in the epigraph
-preserves its compositional independence from the active row's monogram
-and from the page title beneath the topbar.
-
-**Compact fallback.** If the epigraph is suppressed (§8.3), Euler returns
-to the active row in the centre slot at a compact size (15px). This is
-the only condition under which Euler appears at less than 17px in the
-active row.
-
-### 8.3 Editorial eyebrow slot
-
-The epigraph row's **left slot** carries the page's meta-anchor — the
-identifier by which the page is referred to in the body of the practice:
-
-- `fig. 2026·116` — for dated, numbered editorial artefacts (e.g. one fish per day).
-- `note 037` — for serial notes / essay numbers.
-- `§04` — for chaptered long-form.
-- a date (`2026·04·25`) — for dated entries without a serial number.
-
-The rule: **if the surface publishes, it carries an anchor; if it
-operates, it does not use this topbar component.** The two cases:
-
-| Surface kind | Has anchor? | Topbar epigraph |
-|---|---|---|
-| Editorial (publication) | yes | epigraph present, anchor + Euler |
-| Editorial (no anchor — landing, contact) | no | epigraph suppressed, Euler centred compact |
-| Dense (dashboard, CRM, form) | n/a | does not use this topbar at all (see §7.10) |
-
-The component implements this with a `:has()` selector — if
-`.meta-anchor` is empty, the epigraph row collapses and the active row
-re-grids to centre Euler. Consumers can therefore leave the
-`{{META_ANCHOR}}` slot empty without conditional rendering.
-
----
-
-## 10 · Responsive scale
-
-Three parallel scales coexist in this DS, and they correspond to three
-kinds of work:
-
-| Scale | Activated by | For |
-|---|---|---|
-| **Editorial** (default) | unspecified | publication, lead pages, essays, archives — read on a desktop, in print, in a quiet window |
-| **Dense** | `<body class="dense">` | dashboards, monitoring, admin — operated, not read |
-| **Mobile** | `@media (max-width: var(--bp-narrow))` | editorial surfaces viewed on a phone |
-
-**Mobile is editorial relaxed by one notch — not editorial collapsed
-into dense.** The relations between elements stay editorial (hairline
-rules, generous line-height, Manrope body, mono meta), but absolute
-spacings shrink: `--gutter` 64 → 20, `--section-pad` 96 → 56, `--max-width`
-drops the 1320px cap, the largest two stack tokens shrink one step.
-Smaller stacks are unchanged because they already read correctly at
-narrow widths.
-
-**The breakpoint is `--bp-narrow` (640px), not 768.** Empirical: the
-editorial topbar's `1fr auto 1fr` grid stops fitting Russian uppercase
-tagline + Euler + nav at ~640. Consumers that mirror the breakpoint in
-JS or in component-local CSS read `var(--bp-narrow)` rather than
-hard-coding 640. Single source of truth, single place to retune.
-
-**Components affected by the mobile scale:**
-
-- `topbar.html` — reflows to two-row epigraph layout (§8.2a, §8.3).
-- `footer.html` — no markup change; existing `flex-wrap: wrap` reflows
-  the four-column grid to a stack at narrow widths.
-- All editorial typographic classes (`.display-xl`, `.lede`, `.body`,
-  `.meta`) — already use `clamp()` or fixed sizes that read at 320px+;
-  no per-class mobile overrides needed.
-- Data-surface components (charts, tables, callouts, status pills,
-  filter pills) — **out of scope for v0.7**. Data surfaces remain dense
-  regardless of viewport (you do not read a dashboard on a phone; if you
-  must, the surface owns its own narrow-viewport behaviour and is
-  governed by §7.10, not by this section).
-
-**Anti-pattern.** Do not introduce intermediate breakpoints
-(`--bp-tablet`, etc.) without naming a third scale. The DS has three
-scales, not three breakpoints — every breakpoint must correspond to a
-named typographic register, otherwise the system fragments into ad-hoc
-media queries with no semantics.
-
 ---
 
 ## 9 · Theme persistence
 
 `localStorage['theme']` is canon. `prefers-color-scheme` is consulted **only on first visit** as a fallback — once the user toggles, their choice wins forever. This is what `components/topbar.html` already implements.
+
+---
+
+## 10 · Sanctioned alternatives (v0.8)
+
+A design system is a **typed language**, not a list of laws. It has three layers of jurisdiction, and they should not be confused:
+
+1. **Hard layer — tokens & forbidden patterns.** No options. Token values, voice prohibitions (e.g. §7-D8: no Vollkorn on data), antipattern list. A breach is a bug, not a discussion. This is the layer the system exists for.
+2. **Default layer — recommended path.** "If you're not sure, do it this way." H1 = Vollkorn 600, topbar = monogram + Euler + 1–2 nav links, body = Manrope. Most surfaces stop here.
+3. **Sanctioned alternatives — opt-in, with explicit conditions of applicability.** A second permitted move, scoped to a named situation. Without scope it would be "do whatever"; with scope it stays a system, not a free-for-all.
+
+§10 catalogues the alternatives. New entries are admitted only when paired with their **conditions of applicability** — what kind of surface, when, and (when relevant) the failure mode that the default direction has on this surface that this alternative resolves.
+
+### 10.1 · Vertical spine topbar (mobile, editorial only)
+
+**Pattern.** On mobile, the topbar is a vertical 28-px-wide band on the left edge of the viewport instead of a horizontal row across the top. Three slots, top-to-bottom: monogram (top), Euler set vertically (centre, rotated -90°, baseline reading bottom-to-top), theme toggle (bottom). Page content occupies the remaining width. The band is `1px` separated from content by `--rule` *only on the inside edge* — its outside edge is flush with the viewport.
+
+**Why.** The default topbar reads as "a website" — exactly the trope §8-reform is trying to leave. The vertical spine reads as a book's spine: monogram = top stamp, Euler = title down the spine, theme toggle = bottom mark. It is the same three pieces of information, set as a binding rather than a navigation bar.
+
+**Conditions of applicability — ALL must hold.**
+
+1. **Editorial / artistic surface.** Landing, essay, notes, sketchbook, exhibition pages. **Forbidden** on Rybov, on any dashboard, on any admin / monitoring / data-bearing mobile screen.
+2. **Mobile only.** Viewport width < 700px. On desktop the spine becomes ornamental — the default horizontal topbar is correct above 700px.
+3. **No persistent navigation needed.** If the surface needs always-visible nav links beyond a single back/menu affordance, the horizontal default wins — the spine has only three slots and shouldn't grow.
+4. **The page has a clearly readable folio in body content** (see §8 reform: meta-anchor lives in the page, not the chrome). Without a body folio the spine looks chrome-less and disorienting.
+
+**Antipatterns.**
+
+- ❌ Spine on a Rybov screen, even for the section header. Data tools need horizontal scaffolding; the spine is editorial chrome.
+- ❌ Spine with a fourth slot ("a tiny menu icon to fit one more thing"). Three slots, full stop. If a fourth thing is needed, use the default horizontal topbar.
+- ❌ Spine on desktop. The horizontal arrangement is correct above 700px; using a vertical band on a 1440px viewport reads as gimmick, not binding.
+- ❌ Spine without a body folio. The whole point is that meta-anchor moved into the body; if the body doesn't carry it, restore the horizontal topbar.
+
+**Reference.** Direction prototyped in `Топбар - направления.html` (mobile fan-out, frame "C · корешок"). Implementation deferred — the pattern is sanctioned but not yet templated. First production surface to adopt it should be added to `components/`.
+
+### 10.2 · (reserved)
+
+Future entries follow the same shape: **pattern · why · conditions (numbered, ALL must hold) · antipatterns · reference**. Do not relax this shape — the discipline of stating conditions is what keeps §10 from becoming "anything goes."
